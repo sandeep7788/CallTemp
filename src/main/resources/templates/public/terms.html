@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+
+  <main class="content-page legal-page" id="main-content">
+    <section class="content-hero card">
+      <p class="eyebrow">Terms &amp; Conditions</p>
+      <h1>Terms for using MakeCall cloud calling services</h1>
+      <p class="content-lead">Last updated: July 2026. Please read these Terms &amp; Conditions carefully before using MakeCall, makecall.in, wallet recharge, PSTN calling, Twilio-powered voice calling or any related business communication features.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>1. Acceptance of terms</h2>
+      <p>By accessing or using MakeCall, you agree to these Terms &amp; Conditions, our Privacy Policy and applicable platform rules. If you do not agree, do not use the service.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>2. Service description</h2>
+      <p>MakeCall provides browser-based cloud calling, PSTN calling, online voice calling, wallet billing and business communication capabilities powered by modern cloud technologies and third-party service providers such as Twilio and Razorpay.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>3. Permitted use</h2>
+      <p>You agree to use MakeCall only for lawful, respectful and authorized communication. You must not use the service for:</p>
+      <ul>
+        <li>Fraud, impersonation, scams, phishing or misleading communication.</li>
+        <li>Harassment, threats, abuse, hate, spam, robocalling or unsolicited illegal calling.</li>
+        <li>Prank, hoax, malicious, harmful or disruptive calls.</li>
+        <li>Attempts to bypass security, wallet limits, rate limits or technical restrictions.</li>
+        <li>Any activity prohibited by applicable law, telecom rules or third-party provider policies.</li>
+      </ul>
+    </section>
+
+    <section class="card content-card">
+      <h2>4. Emergency calls are not supported</h2>
+      <p><strong>MakeCall must not be used for emergency calls.</strong> The platform does not support emergency services such as 112, 911, 999 or similar numbers. Always use your mobile network, landline or official emergency channel for emergencies.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>5. Account and identity</h2>
+      <p>You must provide accurate account and mobile number information. You are responsible for all activity from your account and for keeping your sign-in access secure. MakeCall may suspend or block accounts that provide false information, misuse the service or create safety risks.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>6. Wallet, pricing and billing</h2>
+      <ul>
+        <li>Current calling rate: <strong>₹10.00 per minute</strong>, calculated proportionally per second.</li>
+        <li>A minimum wallet balance of <strong>₹1.00</strong> is required before placing a call.</li>
+        <li>New eligible users receive a one-time welcome credit of <strong>get Up To ₹10.00</strong>.</li>
+        <li>Minimum wallet recharge amount is <strong>₹5.00</strong>.</li>
+        <li>Wallet top-ups are processed through Razorpay and are subject to payment provider terms.</li>
+        <li>Charges for successfully initiated, connected, routed or billed calls are deducted from your wallet and are generally non-refundable.</li>
+        <li>MakeCall may update pricing when telecom, PSTN, Twilio, cloud infrastructure, payment or compliance costs change.</li>
+      </ul>
+    </section>
+
+    <section class="card content-card">
+      <h2>7. Payments and refunds</h2>
+      <p>Payment and refund handling is governed by our Refund Policy. Failed payments, duplicate payments and missing wallet credits may be reviewed after verification of Razorpay and MakeCall records.</p>
+      <p><a class="link-button" th:href="@{/refund-policy}">Read the Refund Policy</a></p>
+    </section>
+
+    <section class="card content-card">
+      <h2>8. Privacy and data</h2>
+      <p>MakeCall processes account information, mobile numbers, call records, wallet transactions, payment references and technical logs to operate the service, bill calls, prevent misuse and provide support. Please review our Privacy Policy for details.</p>
+      <p><a class="link-button" th:href="@{/privacy-policy}">Read the Privacy Policy</a></p>
+    </section>
+
+    <section class="card content-card">
+      <h2>9. Service availability</h2>
+      <p>MakeCall is provided on an “as available” basis. Cloud services, PSTN connectivity, Twilio services, browser permissions, internet quality, payment gateways or telecom networks may affect availability and call quality. We may perform maintenance or restrict features for safety, compliance or operational reasons.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>10. Suspension and blocking</h2>
+      <p>MakeCall may suspend, restrict or permanently block accounts that violate these Terms, misuse the platform, create security risks, engage in abusive or illegal activity, attempt fraud, dispute legitimate charges or harm other users, providers or the service.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>11. Limitation of liability</h2>
+      <p>To the fullest extent permitted by law, MakeCall and its operators are not liable for indirect, incidental, consequential or special damages arising from use of the service, inability to use the service, call quality issues, third-party provider downtime or user misuse.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>12. Changes to terms</h2>
+      <p>We may update these Terms &amp; Conditions when the service, pricing, compliance requirements or business operations change. Continued use of MakeCall after updates means you accept the revised terms.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>13. Contact</h2>
+      <p>For questions about these Terms, contact MakeCall at <a href="mailto:s.pareekpro@gmail.com">s.pareekpro@gmail.com</a> or <a href="mailto:s.pareek7788@gmail.com">s.pareek7788@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+</body>
+</html>

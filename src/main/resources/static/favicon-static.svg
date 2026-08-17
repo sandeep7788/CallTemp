@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Premium gradient background -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00457C"/>
+      <stop offset="100%" stop-color="#0079C1"/>
+    </linearGradient>
+    
+    <!-- Soft glow effect -->
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Yellow ring gradient for depth -->
+    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFC107"/>
+      <stop offset="100%" stop-color="#FFD54F"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rounded square -->
+  <rect width="64" height="64" rx="14" fill="url(#bgGradient)"/>
+  
+  <!-- Outer yellow ring -->
+  <circle cx="32" cy="32" r="25.5" 
+          fill="none" 
+          stroke="url(#ringGradient)" 
+          stroke-width="2.5"
+          opacity="0.7"
+          filter="url(#softGlow)"/>
+  
+  <!-- Inner yellow ring -->
+  <circle cx="32" cy="32" r="23" 
+          fill="none" 
+          stroke="#FFC107" 
+          stroke-width="1"
+          opacity="0.3"/>
+  
+  <!-- Large, clear phone handset icon -->
+  <g transform="translate(10 10) scale(1.85)" filter="url(#softGlow)">
+    <path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.61 21 3 13.39 3 4c0-.55.45-1 1-1h3.49c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.19 2.2z"
+          fill="white"
+          opacity="0.98"/>
+    <path d="M16.25 4.25c2.2.72 3.78 2.3 4.5 4.5"
+          fill="none"
+          stroke="#FFC107"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          opacity="0.9"/>
+    <path d="M14.8 7.2c.75.3 1.7 1.25 2 2"
+          fill="none"
+          stroke="#FFC107"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          opacity="0.8"/>
+  </g>
+</svg>
+

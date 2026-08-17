@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+
+  <main class="content-page" id="main-content">
+    <section class="content-hero card">
+      <p class="eyebrow">About MakeCall.in</p>
+      <h1>Make Online Calls to Mobile & Landline Numbers from Browser</h1>
+      <p class="content-lead">MakeCall.in is an internet calling platform that enables you to make online phone calls to mobile and landline (PSTN) numbers directly from your web browser. No app download required – just use our browser phone and web dialer for instant online communication.</p>
+    </section>
+
+    <section class="content-grid two-col" aria-label="MakeCall overview">
+      <article class="card content-card">
+        <h2>What is MakeCall.in?</h2>
+        <p>MakeCall.in is a modern online calling platform that lets you call mobile online and call landline online using internet calling technology. Our browser-based web dialer allows you to make phone calls online without installing any app. Simply visit our website, sign in, and start making online calls to any mobile or landline number.</p>
+        <p><strong>Call from browser</strong> – Make online calls using cloud telephony, VoIP calling, and PSTN connectivity for reliable voice communication.</p>
+      </article>
+      <article class="card content-card">
+        <h2>Who Uses MakeCall.in?</h2>
+        <p>MakeCall.in serves individuals and businesses who need to make online calls to mobile numbers and landline numbers without dedicated hardware. Our internet calling platform is perfect for:</p>
+        <ul>
+          <li>Business calling and customer outreach</li>
+          <li>Personal calls to mobile and landline</li>
+          <li>Remote teams needing online communication</li>
+          <li>Users seeking STD call online and ISD call online solutions</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card content-card">
+      <h2>Why Choose MakeCall for Online Calling?</h2>
+      <div class="feature-list">
+        <div>
+          <strong>Browser-Based Internet Calling</strong>
+          <p>Make online calls directly from your browser without downloading any app. Our web dialer and browser phone technology enables instant online phone calls to mobile and landline numbers.</p>
+        </div>
+        <div>
+          <strong>Call Mobile & Landline Online</strong>
+          <p>Connect to both mobile numbers and landline (PSTN) numbers in India. Perfect for online STD calls, ISD calls, and local calling needs.</p>
+        </div>
+        <div>
+          <strong>Smart Web Dialer Technology</strong>
+          <p>MakeCall uses cloud calling, VoIP, and cloud telephony to deliver HD voice calling quality. Our online dial pad makes it easy to call from browser with just a few clicks.</p>
+        </div>
+        <div>
+          <strong>Transparent Online Calling Rates</strong>
+          <p>Clear wallet-based billing at ₹10/minute. No hidden charges for your internet phone calls to mobile or landline.</p>
+        </div>
+        <div>
+          <strong>No App Required</strong>
+          <p>Unlike traditional phone booth or PCO services, MakeCall is a virtual phone booth accessible from any web browser. Make online calls without installing mobile apps.</p>
+        </div>
+        <div>
+          <strong>Secure Communication</strong>
+          <p>Your online phone calls are protected with secure authentication, wallet controls, and usage tracking for safe internet calling.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card content-card">
+      <h2>Responsible communication</h2>
+      <p>MakeCall must be used only for lawful and respectful communication. The service does not support emergency calls and must not be used for fraud, harassment, spam, abuse or any illegal activity. Accounts that violate our Terms &amp; Conditions may be suspended or blocked.</p>
+      <p><a class="link-button" th:href="@{/terms}">Read our Terms &amp; Conditions</a></p>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+</body>
+</html>
+

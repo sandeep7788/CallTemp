@@ -1,0 +1,13 @@
+region        = "ap-south-1"
+
+project_name  = "makecall"
+
+domain_name   = "makecall.in"
+
+instance_type = "t4g.nano"
+
+key_name      = "mainvm"
+
+jar_name      = "app.jar"
+
+ami_id        = "ami-02a05ab341bea6f77"

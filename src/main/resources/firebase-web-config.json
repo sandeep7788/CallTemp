@@ -1,0 +1,17 @@
+{
+  "_comment": "Firebase Web App configuration for Google Sign-In (browser-side).",
+  "_instructions": [
+    "1. Open Firebase Console: https://console.firebase.google.com/project/phonebooth1-f6b63/settings/general",
+    "2. Scroll to 'Your apps' → click your Web App (or click 'Add app' → Web)",
+    "3. Under 'SDK setup and configuration' choose 'Config'",
+    "4. Copy 'apiKey' and 'appId' from the firebaseConfig object into this file",
+    "5. Save the file and restart the application",
+    "6. For production: set env vars FIREBASE_CLIENT_API_KEY and FIREBASE_CLIENT_APP_ID instead"
+  ],
+  "apiKey": "AIzaSyB3PDcvgHnssJVicL-U3BkHYudKm72EtUE",
+  "authDomain": "phonebooth1-f6b63.firebaseapp.com",
+  "projectId": "phonebooth1-f6b63",
+  "storageBucket": "phonebooth1-f6b63.firebasestorage.app",
+  "messagingSenderId": "150801958836",
+  "appId": "1:150801958836:web:03f574e6d4dcdcc98654e1"
+}

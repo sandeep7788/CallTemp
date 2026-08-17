@@ -1,0 +1,31 @@
+# Terraform state files (contain sensitive data — never commit)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Terraform variables (contain passwords and keys)
+terraform.tfvars
+*.auto.tfvars
+
+# Terraform working directory
+.terraform/
+# Keep .terraform.lock.hcl committed for repeatable provider versions.
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Terraform plan output
+*.tfplan
+tfplan
+
+# SSH keys
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# OS files
+.DS_Store
+Thumbs.db
+
