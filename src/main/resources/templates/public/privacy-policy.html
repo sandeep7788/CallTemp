@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+
+  <main class="content-page legal-page" id="main-content">
+    <section class="content-hero card">
+      <p class="eyebrow">Privacy Policy</p>
+      <h1>How MakeCall protects and uses your information</h1>
+      <p class="content-lead">Last updated: July 2026. This Privacy Policy explains how MakeCall collects, uses, stores and protects information when you use makecall.in for cloud calling, PSTN calling, Twilio-powered voice calling and business communication.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>1. Information we collect</h2>
+      <p>We collect information required to operate MakeCall securely and bill calls accurately, including:</p>
+      <ul>
+        <li>Account information such as your name, sign-in identifier, mobile number and authentication details.</li>
+        <li>Approximate location information when provided by your browser or device for account safety and compliance purposes.</li>
+        <li>Call information such as dialed number, call status, timestamps, duration, billing amount and wallet deductions.</li>
+        <li>Payment information such as recharge amount, order ID, payment status and gateway reference from Razorpay. We do not store full card, UPI PIN or banking credentials.</li>
+        <li>Technical information such as browser type, device information, IP-related logs and security events needed to operate the service.</li>
+      </ul>
+    </section>
+
+    <section class="card content-card">
+      <h2>2. How we use information</h2>
+      <ul>
+        <li>To create and secure your MakeCall account.</li>
+        <li>To enable cloud calling, PSTN calling and voice communication through the platform.</li>
+        <li>To calculate call charges, wallet balance, recharge status and transaction history.</li>
+        <li>To detect misuse, fraud, abuse, spam, unauthorized access and policy violations.</li>
+        <li>To provide customer support, service updates, troubleshooting and compliance responses.</li>
+        <li>To improve reliability, performance, call quality and user experience.</li>
+      </ul>
+    </section>
+
+    <section class="card content-card">
+      <h2>3. Sharing and service providers</h2>
+      <p>We do not sell your personal information. We may share necessary operational data with trusted service providers that help us run MakeCall, including cloud infrastructure, Firebase/Google services, Twilio voice services and Razorpay payment processing. These providers process information according to their own terms and privacy practices.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>4. Data retention</h2>
+      <p>We retain account, wallet, payment and call records for as long as required to provide the service, resolve disputes, prevent misuse, comply with legal obligations and maintain accurate billing records. We may retain security logs for fraud prevention and platform integrity.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>5. Security</h2>
+      <p>MakeCall uses authenticated access, cloud-hosted infrastructure, controlled service integrations and operational monitoring to protect user information. No online service can guarantee absolute security, but we take reasonable measures to protect data from unauthorized access, misuse or loss.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>6. Your choices</h2>
+      <p>You can choose not to provide optional browser permissions such as location or microphone access; however, microphone access is required for voice calling. You may contact us to request support with account information, billing queries or data-related concerns.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>7. Children and lawful use</h2>
+      <p>MakeCall is intended for lawful use by users who can enter into binding terms under applicable law. The service must not be used for illegal, fraudulent, abusive, harmful or emergency communication purposes.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>8. Contact</h2>
+      <p>For privacy questions, contact MakeCall at <a href="mailto:s.pareekpro@gmail.com">s.pareekpro@gmail.com</a> or <a href="mailto:s.pareek7788@gmail.com">s.pareek7788@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+</body>
+</html>
+

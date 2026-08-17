@@ -1,0 +1,60 @@
+##########################################################################
+# terraform.tfvars.example
+#
+# INSTRUCTIONS:
+#   1. Copy:  cp terraform.tfvars.example terraform.tfvars
+#   2. Fill in the REQUIRED values below (key_pair_name, trusted_ssh_cidr)
+#   3. Run:   terraform init && terraform plan && terraform apply
+#
+# SECURITY: terraform.tfvars is in .gitignore — never commit it to git.
+#
+# NOTE: Twilio, Razorpay, and wallet settings are stored in Firestore
+#       (app_config collection), NOT here.  On first boot the app seeds
+#       default placeholder values.  Update them in Firestore before
+#       going live.
+##########################################################################
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REGION — LOCKED to ap-south-1 (Mumbai, India)
+# ─────────────────────────────────────────────────────────────────────────────
+aws_region = "ap-south-1"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REQUIRED — Fill these two values before running terraform apply
+# ─────────────────────────────────────────────────────────────────────────────
+
+# AWS Key Pair name (create in: AWS Console → EC2 → Key Pairs → Create key pair)
+# Then: chmod 400 ~/Downloads/phonebooth-key.pem && mv ~/Downloads/phonebooth-key.pem ~/.ssh/
+key_pair_name = "phonebooth-key"
+
+# Your public IP in CIDR format (run: curl https://checkip.amazonaws.com)
+# Replace with your actual IP, e.g.: "203.0.113.42/32"
+trusted_ssh_cidr = "YOUR_PUBLIC_IP/32"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PRE-FILLED — Safe defaults, override as needed
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Application name (used to name all AWS resources)
+app_name = "phonebooth"
+
+# Java version — from pom.xml: <java.version>21</java.version>
+java_version = "21"
+
+# Spring Boot port — from application.properties: server.port = 8080
+app_port = 8080
+
+# Environment label
+environment = "production"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# S3 — JAR deployment bucket (must be globally unique)
+# The EC2 instance downloads application.jar from this bucket on first boot
+# using its IAM instance profile — no credentials needed on the instance.
+# ─────────────────────────────────────────────────────────────────────────────
+s3_bucket_name = "phonebooth-app-jars"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Firebase — project ID injected into EC2 as FIREBASE_PROJECT_ID env var
+# ─────────────────────────────────────────────────────────────────────────────
+firebase_project_id = "phonebooth1-f6b63"

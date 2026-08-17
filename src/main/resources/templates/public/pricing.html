@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+
+  <main class="content-page" id="main-content">
+    <section class="content-hero card">
+      <p class="eyebrow">Online Calling Rates</p>
+      <h1>Affordable Internet Calling to Mobile & Landline</h1>
+      <p class="content-lead">Simple wallet-based pricing for online phone calls. Make calls to mobile and landline numbers from browser at transparent rates. No subscription – pay only for what you use.</p>
+    </section>
+
+    <section class="pricing-panel card" aria-labelledby="calling-rate-title">
+      <div>
+        <p class="eyebrow">Browser Phone & Web Dialer Rate</p>
+        <h2 id="calling-rate-title">₹10.00 per minute</h2>
+        <p>Call mobile online or call landline online at a flat rate. Billing is per-second from when your call connects. Perfect for online STD calls, ISD calls, and local calling.</p>
+      </div>
+      <a class="primary-action pricing-cta" th:href="@{/}">Start making online calls</a>
+    </section>
+
+    <section class="content-grid three-col" aria-label="Pricing details">
+      <article class="card content-card">
+        <h2>Welcome credit</h2>
+        <p>New users receive a one-time get Up To ₹10.00 welcome credit after account creation, subject to platform eligibility and anti-misuse checks.</p>
+      </article>
+      <article class="card content-card">
+        <h2>Minimum balance</h2>
+        <p>A minimum wallet balance of ₹1.00 is required before placing a call. This helps prevent interrupted billing and negative wallet balances.</p>
+      </article>
+      <article class="card content-card">
+        <h2>Wallet recharge</h2>
+        <p>The minimum recharge amount is ₹5. Payments are processed through Razorpay using supported payment methods in India.</p>
+      </article>
+    </section>
+
+    <section class="card content-card">
+      <h2>Billing examples</h2>
+      <div class="billing-table" role="table" aria-label="MakeCall billing examples">
+        <div role="row"><strong role="cell">15 seconds</strong><span role="cell">₹2.50</span></div>
+        <div role="row"><strong role="cell">30 seconds</strong><span role="cell">₹5.00</span></div>
+        <div role="row"><strong role="cell">60 seconds</strong><span role="cell">₹10.00</span></div>
+        <div role="row"><strong role="cell">90 seconds</strong><span role="cell">₹15.00</span></div>
+      </div>
+    </section>
+
+    <section class="card content-card">
+      <h2>Important pricing notes</h2>
+      <ul>
+        <li>Rates may vary in the future depending on telecom, PSTN, Twilio or cloud telephony costs.</li>
+        <li>Taxes, payment gateway charges or regulatory costs may apply where required by law or payment providers.</li>
+        <li>Calls already made and successfully billed are not refundable except where required by applicable law.</li>
+        <li>For failed or duplicate wallet payments, review our <a class="link-button" th:href="@{/refund-policy}">Refund Policy</a>.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+</body>
+</html>
+

@@ -1,0 +1,216 @@
+========================================
+DIAGNOSTIC GUIDE - TWILIO NOT LOADING
+========================================
+
+If you're still getting "Twilio is not defined", follow these steps:
+
+========================================
+STEP 1: CHECK BROWSER CONSOLE
+========================================
+
+1. Open http://localhost:8080/ in your browser
+
+2. Press F12 to open Developer Tools
+
+3. Go to Console tab
+
+4. Look for this message:
+   ✅ "Twilio SDK loaded successfully!" 
+   ❌ "ERROR: Twilio SDK did not load!"
+
+If you see the ERROR message, proceed to Step 2.
+
+========================================
+STEP 2: CHECK NETWORK TAB
+========================================
+
+1. In Developer Tools, click on "Network" tab
+
+2. Refresh the page (Ctrl+R or F5)
+
+3. Look for "twilio.min.js" in the list
+
+4. Click on it to see details
+
+Check the Status:
+   ✅ 200 OK = Good, file loaded
+   ❌ 404 Not Found = URL is wrong
+   ❌ Failed = Network/firewall issue
+   ❌ (pending) = Still loading or blocked
+
+Check the Response tab:
+   ✅ Should show JavaScript code
+   ❌ If empty or HTML error page = Problem!
+
+========================================
+STEP 3: TEST THE URL DIRECTLY
+========================================
+
+1. Open a new browser tab
+
+2. Copy and paste this exact URL:
+   https://media.twiliocdn.com/sdk/js/client/v1.10/twilio.min.js
+
+3. What happens?
+   ✅ JavaScript code displays or downloads = CDN works fine
+   ❌ 404 error = CDN URL changed (rare)
+   ❌ Timeout/connection error = Network/firewall blocking it
+   ❌ Nothing loads = Internet or DNS issue
+
+========================================
+STEP 4: CHECK FOR BROWSER CACHE
+========================================
+
+This is the MOST COMMON issue!
+
+Option A: Use Incognito/Private Mode (RECOMMENDED)
+   - Chrome: Ctrl+Shift+N
+   - Firefox: Ctrl+Shift+P  
+   - Edge: Ctrl+Shift+N
+   - Safari: Cmd+Shift+N
+   
+   Then open: http://localhost:8080/
+
+Option B: Clear All Cache
+   1. Press Ctrl+Shift+Delete
+   2. Select "All time" 
+   3. Check "Cached images and files"
+   4. Click "Clear data"
+   5. Close and restart browser
+   6. Try again
+
+========================================
+STEP 5: CHECK FOR SCRIPT BLOCKING
+========================================
+
+1. In browser, check if scripts are blocked:
+   - Look for shield icon in address bar
+   - Click it and allow scripts
+
+2. Check browser extensions:
+   - Ad blockers might block CDN
+   - Try disabling extensions temporarily
+
+3. Check antivirus/firewall:
+   - Some security software blocks CDN content
+   - Temporarily disable to test
+
+========================================
+STEP 6: ALTERNATIVE SOLUTION
+========================================
+
+If CDN is blocked, download Twilio SDK locally:
+
+1. Download from:
+   https://media.twiliocdn.com/sdk/js/client/v1.10/twilio.min.js
+
+2. Save as:
+   src/main/resources/static/js/twilio.min.js
+
+3. Update index.html:
+   Change:
+   <script src="https://media.twiliocdn.com/sdk/js/client/v1.10/twilio.min.js"></script>
+   
+   To:
+   <script th:src="@{/js/twilio.min.js}"></script>
+
+4. Restart Spring Boot app
+
+========================================
+STEP 7: CHECK CONSOLE FOR DETAILS
+========================================
+
+The updated quickstart.js now has better error checking.
+
+You should see one of these in console:
+   ✅ "Twilio SDK loaded successfully!" {Object}
+   ❌ "ERROR: Twilio SDK did not load!"
+
+If ERROR, check the error message that follows for details.
+
+========================================
+STEP 8: VERIFY FILE PATHS
+========================================
+
+Make sure these files exist:
+
+1. src/main/resources/templates/public/index.html
+2. src/main/resources/static/js/quickstart.js
+
+Run this command to check:
+```
+Get-ChildItem -Path "src/main/resources" -Recurse | Where-Object {$_.Name -match "index.html|quickstart.js"}
+```
+
+========================================
+MOST LIKELY CAUSES
+========================================
+
+1. Browser Cache (80% of cases)
+   → Solution: Use Incognito mode
+
+2. Network/Firewall blocking CDN (15% of cases)
+   → Solution: Download SDK locally (Step 6)
+
+3. Typo in URL or wrong path (4% of cases)
+   → Solution: Copy exact URL from this guide
+
+4. Spring Boot not serving static files (1% of cases)
+   → Solution: Check application.properties
+
+========================================
+QUICK TEST SCRIPT
+========================================
+
+Add this to browser console to test:
+
+```javascript
+// Test if Twilio loads
+setTimeout(function() {
+  console.log('Checking Twilio...', typeof Twilio);
+  if (typeof Twilio !== 'undefined') {
+    console.log('✅ Twilio is loaded!', Twilio);
+  } else {
+    console.log('❌ Twilio is NOT loaded');
+    console.log('Check Network tab for twilio.min.js');
+  }
+}, 3000);
+```
+
+Paste this in Console tab and wait 3 seconds.
+
+========================================
+IF NOTHING WORKS
+========================================
+
+1. Take a screenshot of:
+   - Network tab showing twilio.min.js request
+   - Console tab showing errors
+   - Application tab showing page
+
+2. Check these specific things:
+   - Is Spring Boot running? (console should show "Started")
+   - Is port 8080 accessible? (try curl localhost:8080)
+   - Can you access http://localhost:8080/js/quickstart.js directly?
+
+3. Try different browser:
+   - Chrome, Firefox, or Edge
+   - Fresh install without extensions
+
+========================================
+CONTACT INFORMATION
+========================================
+
+If you've tried everything:
+
+1. Check Twilio Status: https://status.twilio.com/
+2. Check if CDN is down: https://downdetector.com/
+3. Try different network (mobile hotspot)
+
+========================================
+
+The updated quickstart.js now shows clear error messages
+in the console. Check there first!
+
+========================================
+

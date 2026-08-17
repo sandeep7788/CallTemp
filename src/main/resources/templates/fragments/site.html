@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="seo(pageTitle, pageDescription, pageKeywords, canonicalPath, ogType)"
+          th:with="canonicalUrl=${canonicalPath == '/' ? siteUrl + '/' : siteUrl + canonicalPath}, imageUrl=${siteUrl + '/favicon.svg'}">
+  <title th:text="${pageTitle}">MakeCall.in – Online Phone Calls to Mobile & Landline | Internet Calling Platform</title>
+  <meta name="description" th:content="${pageDescription}" content="Make online calls to mobile and landline (PSTN) numbers directly from your browser. MakeCall.in is a secure internet calling platform for online phone calls, web dialer, browser calling, VoIP and cloud telephony.">
+  <meta name="keywords" th:content="${pageKeywords}" content="make online call, online calling, internet calling, phone call online, online phone call, browser calling, browser phone, web dialer, online dial pad, mobile calling, landline calling, PSTN calling, call mobile online, call landline online, online STD call, online ISD call, virtual PCO, virtual phone booth, internet phone, cloud calling, cloud telephony, VoIP calling, SIP calling, smart dialer, digital calling, click to call, business calling, web calling, HD voice calling, online communication, call from browser, online call India, ऑनलाइन कॉल करें, मोबाइल पर कॉल करें, इंटरनेट से कॉल करें, ऑनलाइन फोन कॉल, मोबाइल नंबर पर कॉल, लैंडलाइन पर कॉल, ऑनलाइन डायल पैड, एसटीडी कॉल, आईएसडी कॉल, पीसीओ कॉल, फोन बूथ, इंटरनेट कॉलिंग, मोबाइल कॉलिंग, ब्राउज़र से कॉल करें, बिना ऐप कॉल करें, इंटरनेट फोन सेवा">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="MakeCall">
+  <meta name="language" content="English, Hindi">
+  <meta http-equiv="content-language" content="en-IN">
+  <meta name="geo.region" content="IN">
+  <meta name="geo.placename" content="India">
+  <link rel="canonical" th:href="${canonicalUrl}" href="https://makecall.in/">
+  <link rel="alternate" hreflang="en-IN" th:href="${canonicalUrl}" href="https://makecall.in/">
+  <link rel="alternate" hreflang="en" th:href="${canonicalUrl}" href="https://makecall.in/">
+  <link rel="alternate" hreflang="hi" th:href="${canonicalUrl}" href="https://makecall.in/">
+  <link rel="alternate" hreflang="x-default" th:href="${canonicalUrl}" href="https://makecall.in/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" th:content="${ogType}" content="website">
+  <meta property="og:title" th:content="${pageTitle}" content="MakeCall.in – Online Phone Calls to Mobile & Landline | Internet Calling Platform">
+  <meta property="og:description" th:content="${pageDescription}" content="Make online calls to mobile and landline (PSTN) numbers directly from your browser. Secure internet calling platform with web dialer, browser calling and cloud telephony.">
+  <meta property="og:url" th:content="${canonicalUrl}" content="https://makecall.in/">
+  <meta property="og:image" th:content="${imageUrl}" content="https://makecall.in/favicon.svg">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="MakeCall">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:locale:alternate" content="hi_IN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" th:content="${pageTitle}" content="MakeCall.in – Online Phone Calls to Mobile & Landline">
+  <meta name="twitter:description" th:content="${pageDescription}" content="Make online calls to mobile and landline numbers from browser. Internet calling platform with web dialer and cloud telephony.">
+  <meta name="twitter:image" th:content="${imageUrl}" content="https://makecall.in/favicon.svg">
+  <meta name="twitter:url" th:content="${canonicalUrl}" content="https://makecall.in/">
+  <meta name="twitter:site" content="@makecall_in">
+  <meta name="twitter:creator" content="@makecall_in">
+
+  <!-- Favicons optimized for SEO -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/icons/favicon-48x48.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-touch-icon-120x120.png">
+  
+  <!-- Android Chrome -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Safari Pinned Tab -->
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#00457C">
+  
+  <!-- Microsoft Tiles -->
+  <meta name="msapplication-TileColor" content="#00457C">
+  <meta name="msapplication-TileImage" content="/icons/mstile-144x144.png">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://www.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet">
+
+  <!-- Brand Theme Colors -->
+  <meta name="theme-color" content="#00457C">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#00457C">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#00457C">
+  <meta name="color-scheme" content="light dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MakeCall">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="MakeCall">
+  
+  <link href="/css/site.css" rel="stylesheet">
+</th:block>
+
+<th:block th:fragment="structuredData(pageTitle, pageDescription, canonicalPath)"
+          th:with="canonicalUrl=${canonicalPath == '/' ? siteUrl + '/' : siteUrl + canonicalPath}">
+  <script type="application/ld+json" th:utext="${structuredDataJson}">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://makecall.in/#organization",
+        "name": "MakeCall",
+        "url": "https://makecall.in/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://makecall.in/favicon.svg",
+          "width": "512",
+          "height": "512"
+        },
+        "description": "MakeCall provides secure internet calling to mobile and landline (PSTN) numbers. Make online phone calls directly from your browser with our web dialer and cloud telephony platform.",
+        "email": ["mailto:s.pareekpro@gmail.com", "mailto:s.pareek7788@gmail.com"],
+        "telephone": "+91-7239962886",
+        "sameAs": [
+          "https://instagram.com/makecall.in"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "P-9/1583, Sanjay Nagar, D.C.M. Ajmer Road",
+          "addressLocality": "Jaipur",
+          "addressRegion": "Rajasthan",
+          "postalCode": "302021",
+          "addressCountry": "IN"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-7239962886",
+          "contactType": "customer support",
+          "email": "s.pareekpro@gmail.com",
+          "areaServed": "IN",
+          "availableLanguage": ["English", "Hindi"]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://makecall.in/#website",
+        "url": "https://makecall.in/",
+        "name": "MakeCall - Online Calling Platform",
+        "description": "Make online calls to mobile and landline numbers from your browser",
+        "publisher": { "@id": "https://makecall.in/#organization" },
+        "inLanguage": ["en-IN", "hi-IN"],
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://makecall.in/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://makecall.in/#webapp",
+        "name": "MakeCall",
+        "url": "https://makecall.in/",
+        "description": "Browser-based online calling platform for making phone calls to mobile and landline (PSTN) numbers over the internet",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Any (Web Browser)",
+        "browserRequirements": "Requires JavaScript, WebRTC support",
+        "offers": {
+          "@type": "Offer",
+          "price": "10.00",
+          "priceCurrency": "INR",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "10.00",
+            "priceCurrency": "INR",
+            "unitText": "per minute"
+          }
+        },
+        "featureList": [
+          "Online calling to mobile numbers",
+          "Online calling to landline PSTN numbers",
+          "Browser-based web dialer",
+          "No app download required",
+          "Wallet-based billing",
+          "Call history tracking",
+          "Cloud telephony"
+        ],
+        "screenshot": "https://makecall.in/favicon.svg"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://makecall.in/#webpage",
+        "url": "https://makecall.in/",
+        "name": "Make Online Calls to Mobile & Landline Numbers",
+        "description": "Make online calls to mobile and landline (PSTN) numbers directly from your browser with MakeCall.in internet calling platform",
+        "isPartOf": { "@id": "https://makecall.in/#website" },
+        "about": { "@id": "https://makecall.in/#organization" },
+        "inLanguage": "en-IN",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://makecall.in/"
+            }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I make online calls with MakeCall?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sign in to MakeCall.in, add credit to your wallet, enter the phone number in the dial pad, and tap Call. You can make calls to mobile and landline (PSTN) numbers directly from your browser."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the calling rate?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MakeCall charges ₹10 per minute for calls to mobile and landline numbers. Billing is calculated per second from when the call is answered."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I call landline numbers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, MakeCall supports calls to both mobile and landline (PSTN) numbers in India. Simply enter the landline number with STD code and call."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to download an app?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, MakeCall works directly in your web browser. No app download is required. Just visit makecall.in from any device with internet connection."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</th:block>
+
+<div th:fragment="background" class="bg-anim" aria-hidden="true">
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+  <div class="bg-blob bg-blob-4"></div>
+  <div class="bg-blob bg-blob-5"></div>
+</div>
+
+<header th:fragment="publicNav(activePage)" class="site-header" role="banner">
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a class="site-brand" th:href="@{/}" aria-label="MakeCall home">
+      <span class="site-brand-mark" aria-hidden="true">M</span>
+      <span>
+        <strong>MakeCall</strong>
+        <small>Cloud Voice Platform</small>
+      </span>
+    </a>
+    <div class="site-nav-links">
+      <a th:href="@{/}" th:classappend="${activePage == 'home'} ? ' is-active' : ''">Home</a>
+      <a th:href="@{/about}" th:classappend="${activePage == 'about'} ? ' is-active' : ''">About</a>
+      <a th:href="@{/pricing}" th:classappend="${activePage == 'pricing'} ? ' is-active' : ''">Pricing</a>
+      <a th:href="@{/contact}" th:classappend="${activePage == 'contact'} ? ' is-active' : ''">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<footer th:fragment="publicFooter(activePage)" class="site-footer" role="contentinfo">
+  <div class="footer-grid">
+    <section class="footer-section footer-about" aria-labelledby="footer-about-title">
+      <a class="footer-brand" th:href="@{/}" aria-label="MakeCall home">
+        <span class="site-brand-mark" aria-hidden="true">M</span>
+        <span>MakeCall</span>
+      </a>
+      <h2 id="footer-about-title" class="sr-only">About MakeCall</h2>
+      <p>MakeCall provides secure cloud-based calling, PSTN calling, business communication, and voice solutions powered by modern cloud technologies.</p>
+      <div class="footer-social" aria-label="Follow MakeCall">
+        <span>Follow Us</span>
+        <a href="https://instagram.com/makecall.in" target="_blank" rel="noopener noreferrer" aria-label="Follow MakeCall on Instagram">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 12 16.5 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 12 14.5 2.5 2.5 0 0 0 12 9.5zM17.75 6.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/>
+          </svg>
+          @makecall.in
+        </a>
+      </div>
+    </section>
+
+    <section class="footer-section" aria-labelledby="footer-links-title">
+      <h2 id="footer-links-title">Quick Links</h2>
+      <ul class="footer-links">
+        <li><a th:href="@{/}" th:classappend="${activePage == 'home'} ? ' is-active' : ''">Home</a></li>
+        <li><a th:href="@{/about}" th:classappend="${activePage == 'about'} ? ' is-active' : ''">About Us</a></li>
+        <li><a th:href="@{/pricing}" th:classappend="${activePage == 'pricing'} ? ' is-active' : ''">Pricing</a></li>
+        <li><a th:href="@{/contact}" th:classappend="${activePage == 'contact'} ? ' is-active' : ''">Contact Us</a></li>
+        <li><a th:href="@{/privacy-policy}" th:classappend="${activePage == 'privacy'} ? ' is-active' : ''">Privacy Policy</a></li>
+        <li><a th:href="@{/terms}" th:classappend="${activePage == 'terms'} ? ' is-active' : ''">Terms &amp; Conditions</a></li>
+        <li><a th:href="@{/refund-policy}" th:classappend="${activePage == 'refund'} ? ' is-active' : ''">Refund Policy</a></li>
+      </ul>
+    </section>
+
+    <section class="footer-section footer-contact" aria-labelledby="footer-contact-title">
+      <h2 id="footer-contact-title">Contact</h2>
+      <address>
+        <span>P-9/1583, Sanjay Nagar</span>
+        <span>D.C.M. Ajmer Road</span>
+        <span>Jaipur, Rajasthan – 302021</span>
+        <span>India</span>
+      </address>
+      <ul class="footer-contact-list">
+        <li><a href="tel:+917239962886">+91 7239962886</a></li>
+        <li><a href="mailto:s.pareekpro@gmail.com">s.pareekpro@gmail.com</a></li>
+        <li><a href="mailto:s.pareek7788@gmail.com">s.pareek7788@gmail.com</a></li>
+        <li><a href="https://instagram.com/makecall.in" target="_blank" rel="noopener noreferrer">Instagram @makecall.in</a></li>
+      </ul>
+    </section>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 MakeCall. All Rights Reserved.</p>
+    <p>Secure cloud calling, PSTN calling and business communication for India.</p>
+  </div>
+</footer>
+
+</body>
+</html>
+

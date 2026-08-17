@@ -1,0 +1,57 @@
+# MakeCall.in - Online Calling Platform
+# Make online calls to mobile and landline (PSTN) numbers from browser
+
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /pricing
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms
+Allow: /terms-and-conditions
+Allow: /refund-policy
+
+# Static assets for better indexing
+Allow: /css/
+Allow: /js/
+Allow: /icons/
+Allow: /*.css$
+Allow: /*.js$
+Allow: /favicon.ico
+Allow: /favicon.svg
+Allow: /manifest.json
+
+# Block private endpoints
+Disallow: /user/
+Disallow: /call/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /actuator/
+
+# Block query parameters that don't create unique content
+Disallow: /*?*
+
+# Sitemap location
+Sitemap: https://makecall.in/sitemap.xml
+
+# Crawl-delay for respecting server resources
+Crawl-delay: 1
+
+# Special instructions for specific bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /icons/
+Allow: /*.svg
+Allow: /*.png
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+
+  <main class="content-page" id="main-content">
+    <section class="content-hero card">
+      <p class="eyebrow">Contact MakeCall</p>
+      <h1>We’re here to help with cloud calling and voice communication</h1>
+      <p class="content-lead">Contact MakeCall for support, billing questions, PSTN calling information, Twilio calling assistance or business communication enquiries.</p>
+    </section>
+
+    <section class="content-grid two-col" aria-label="Contact options">
+      <article class="card contact-card">
+        <h2>Email support</h2>
+        <p>For account, wallet, calling or policy questions, email us and include your registered mobile number if your request relates to an account.</p>
+        <p><a href="mailto:s.pareekpro@gmail.com">s.pareekpro@gmail.com</a></p>
+        <p><a href="mailto:s.pareek7788@gmail.com">s.pareek7788@gmail.com</a></p>
+      </article>
+
+      <article class="card contact-card">
+        <h2>Phone</h2>
+        <p>Call us for MakeCall platform support and business communication enquiries.</p>
+        <p><a href="tel:+917239962886">+91 7239962886</a></p>
+      </article>
+
+      <article class="card contact-card">
+        <h2>Office address</h2>
+        <address>
+          P-9/1583, Sanjay Nagar<br>
+          D.C.M. Ajmer Road<br>
+          Jaipur, Rajasthan – 302021<br>
+          India
+        </address>
+      </article>
+
+      <article class="card contact-card">
+        <h2>Follow Us</h2>
+        <p>Follow MakeCall on Instagram for updates about cloud calling, online calling and communication features.</p>
+        <p><a href="https://instagram.com/makecall.in" target="_blank" rel="noopener noreferrer">Instagram @makecall.in</a></p>
+      </article>
+    </section>
+
+    <section class="card content-card">
+      <h2>Support notes</h2>
+      <ul>
+        <li>MakeCall does not support emergency calling. Use your mobile network or local emergency services for emergencies.</li>
+        <li>For payment issues, include the payment date, amount, registered mobile number and Razorpay payment reference if available.</li>
+        <li>For call quality concerns, include the approximate call time, destination country/number prefix and a brief description of the issue.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+</body>
+</html>
+

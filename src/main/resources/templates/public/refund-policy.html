@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+
+  <main class="content-page legal-page" id="main-content">
+    <section class="content-hero card">
+      <p class="eyebrow">Refund Policy</p>
+      <h1>Wallet recharge and calling payment refunds</h1>
+      <p class="content-lead">Last updated: July 2026. This Refund Policy explains how MakeCall handles wallet recharges, failed payments, duplicate payments and billed call charges for secure cloud calling and PSTN calling on makecall.in.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>1. Wallet recharge payments</h2>
+      <p>Wallet recharges are processed through Razorpay. When a payment is successful, the recharge amount is added to your MakeCall wallet and can be used for eligible voice calls on the platform.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>2. Failed or pending payments</h2>
+      <p>If your bank, UPI app, card issuer or payment provider debits an amount but MakeCall does not receive a successful payment confirmation, the payment may remain pending or fail. In such cases, the amount is typically reversed by the bank or payment provider according to their timelines. You may contact us with the payment reference if the amount is not reversed within 5–7 business days.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>3. Duplicate payments</h2>
+      <p>If the same recharge is charged more than once and only one wallet credit is provided, MakeCall will verify the Razorpay payment records and either credit the missing wallet amount or initiate a refund for the duplicate payment where applicable.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>4. Non-refundable usage</h2>
+      <p>Charges for calls that were successfully initiated, connected, routed, billed or otherwise consumed through MakeCall are non-refundable, except where required by applicable law or where MakeCall confirms a platform-side billing error.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>5. Refund review process</h2>
+      <p>To request a review, email us with your registered mobile number, recharge amount, payment date, Razorpay payment ID/order ID if available, and a brief explanation. Approved refunds are processed to the original payment method whenever supported by the payment provider.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>6. Refund timeline</h2>
+      <p>Once approved, refunds are generally initiated within 5–7 business days. The actual credit date depends on the bank, card issuer, UPI provider or payment gateway settlement timeline.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>7. Contact for payment support</h2>
+      <p>For recharge or refund support, contact <a href="mailto:s.pareekpro@gmail.com">s.pareekpro@gmail.com</a> or <a href="mailto:s.pareek7788@gmail.com">s.pareek7788@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+</body>
+</html>
+
