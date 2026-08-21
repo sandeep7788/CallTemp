@@ -261,7 +261,7 @@ public class IndexController {
 
             Map<String, Object> address = new LinkedHashMap<>();
             address.put("@type", "PostalAddress");
-            address.put("streetAddress", "P-9/1583, Sanjay Nagar, D.C.M. Ajmer Road");
+            address.put("streetAddress", "ADR, D.C.M. Ajmer Road");
             address.put("addressLocality", "Jaipur");
             address.put("addressRegion", "Rajasthan");
             address.put("postalCode", "302021");

@@ -1,495 +1,543 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
-  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+    <th:block
+            th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+    <th:block
+            th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
 
-  <!-- Runtime config (server-injected) -->
-  <script th:inline="javascript">
-    window.dashboardMessage = {
-      enabled: /*[[${dashboardMessageEnabled}]]*/ false,
-      message: /*[[${dashboardMessage}]]*/ ''
-    };
-    window.maintenanceMode = {
-      enabled: /*[[${maintenanceMode}]]*/ false,
-      message: /*[[${maintenanceMessage}]]*/ 'The application is currently under maintenance. Please try again later.'
-    };
-    window.firebaseConfig = {
-      apiKey:     /*[[${firebaseApiKey}]]*/ '',
-      authDomain: /*[[${firebaseAuthDomain}]]*/ '',
-      projectId:  /*[[${firebaseProjectId}]]*/ '',
-      appId:      /*[[${firebaseAppId}]]*/ ''
-    };
-    window.firebaseConfigured = /*[[${firebaseConfigured}]]*/ false;
-    // Feature flag: when false, simple phone-number login is used; no Google Sign-In UI/API
-    window.enableGoogleSignIn = /*[[${enableGoogleSignIn}]]*/ true;
-  </script>
+    <!-- Runtime config (server-injected) -->
+    <script th:inline="javascript">
+        window.dashboardMessage = {
+            enabled: /*[[${dashboardMessageEnabled}]]*/ false,
+            message: /*[[${dashboardMessage}]]*/ ''
+        };
+        window.maintenanceMode = {
+            enabled: /*[[${maintenanceMode}]]*/ false,
+            message: /*[[${maintenanceMessage}]]*/ 'The application is currently under maintenance. Please try again later.'
+        };
+        window.firebaseConfig = {
+            apiKey:     /*[[${firebaseApiKey}]]*/ '',
+            authDomain: /*[[${firebaseAuthDomain}]]*/ '',
+            projectId:  /*[[${firebaseProjectId}]]*/ '',
+            appId:      /*[[${firebaseAppId}]]*/ ''
+        };
+        window.firebaseConfigured = /*[[${firebaseConfigured}]]*/ false;
+        // Feature flag: when false, simple phone-number login is used; no Google Sign-In UI/API
+        window.enableGoogleSignIn = /*[[${enableGoogleSignIn}]]*/ true;
+    </script>
 </head>
 
 <body>
-  <div th:replace="~{fragments/site :: background}"></div>
-  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+<div th:replace="~{fragments/site :: background}"></div>
+<header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
 
-  <main id="controls" class="app-shell">
+<main id="controls" class="app-shell">
 
     <!-- ① DIALER CARD – first in DOM = top on mobile -->
     <section id="call-controls" class="card dialer-card" aria-labelledby="dialer-title">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow"><b>Online Calling Platform – Browser Phone</b></p>
-          <h2 id="dialer-title">Make Online Calls to Mobile & Landline.</h2>
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow"><b>Online Calling Platform – Browser Phone</b></p>
+                <h2 id="dialer-title">Make Online Calls to Mobile & Landline.</h2>
+            </div>
+            <!-- Microphone permission check button -->
+            <button type="button" id="btn-check-permissions" class="perm-check-btn"
+                    title="Check microphone permission" aria-label="Check microphone permission">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 1 1 2 0 8 8 0 0 1-7 7.938V22h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.062A8 8 0 0 1 4 12a1 1 0 0 1 1-1z"/>
+                </svg>
+                <span class="perm-dot" id="perm-dot"></span>
+            </button>
         </div>
-        <!-- Microphone permission check button -->
-        <button type="button" id="btn-check-permissions" class="perm-check-btn"
-                title="Check microphone permission" aria-label="Check microphone permission">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 1 1 2 0 8 8 0 0 1-7 7.938V22h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.062A8 8 0 0 1 4 12a1 1 0 0 1 1-1z"/>
-          </svg>
-          <span class="perm-dot" id="perm-dot"></span>
-        </button>
-      </div>
 
-      <label class="sr-only" for="phone-number">Phone number or client name</label>
-      <div class="number-entry">
-        <input id="phone-number" type="tel" inputmode="none" autocomplete="off"
-               placeholder="Enter phone number…"
-               aria-label="Phone number input - Paste or dial a number to call"
-               pattern="[0-9+\-\s()]+"
-               title="Enter a valid phone number (10+ digits)" />
-        <button type="button" class="icon-button backspace-btn" id="button-clear"
-                aria-label="Delete last digit (Hold to clear all)"
-                title="Tap: Delete last digit | Hold: Clear number">
-          <!-- Backspace / delete symbol -->
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
-            <line x1="18" y1="9" x2="12" y2="15"/>
-            <line x1="12" y1="9" x2="18" y2="15"/>
-          </svg>
-        </button>
-      </div>
+        <label class="sr-only" for="phone-number">Phone number or client name</label>
+        <label class="sr-only" for="phone-number">Phone number or client name</label>
+        <div class="number-entry">
+            <input
+                    id="phone-number"
+                    type="tel"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                    placeholder="Enter phone number…"
+                    aria-label="Phone number input - Paste or dial a number to call"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    title="Enter a 10-digit phone number"
+            />
 
-      <div id="dialpad" class="dialpad" aria-label="Dial pad">
-        <button type="button" class="dial-key" data-key="1">
-          <span class="dial-digit">1</span>
-          <small class="dial-sub">&nbsp;</small>
-        </button>
-        <button type="button" class="dial-key" data-key="2">
-          <span class="dial-digit">2</span>
-          <small class="dial-sub">ABC</small>
-        </button>
-        <button type="button" class="dial-key" data-key="3">
-          <span class="dial-digit">3</span>
-          <small class="dial-sub">DEF</small>
-        </button>
-        <button type="button" class="dial-key" data-key="4">
-          <span class="dial-digit">4</span>
-          <small class="dial-sub">GHI</small>
-        </button>
-        <button type="button" class="dial-key" data-key="5">
-          <span class="dial-digit">5</span>
-          <small class="dial-sub">JKL</small>
-        </button>
-        <button type="button" class="dial-key" data-key="6">
-          <span class="dial-digit">6</span>
-          <small class="dial-sub">MNO</small>
-        </button>
-        <button type="button" class="dial-key" data-key="7">
-          <span class="dial-digit">7</span>
-          <small class="dial-sub">PQRS</small>
-        </button>
-        <button type="button" class="dial-key" data-key="8">
-          <span class="dial-digit">8</span>
-          <small class="dial-sub">TUV</small>
-        </button>
-        <button type="button" class="dial-key" data-key="9">
-          <span class="dial-digit">9</span>
-          <small class="dial-sub">WXYZ</small>
-        </button>
-        <button type="button" class="dial-key dial-key-sym" data-key="*">
-          <span class="dial-digit">✳</span>
-        </button>
-        <button type="button" class="dial-key" data-key="0">
-          <span class="dial-digit">0</span>
-          <small class="dial-sub">+</small>
-        </button>
-        <button type="button" class="dial-key dial-key-sym" data-key="#">
-          <span class="dial-digit">#</span>
-        </button>
-      </div>
+            <button
+                    type="button"
+                    class="icon-button backspace-btn"
+                    id="button-clear"
+                    aria-label="Delete last digit (Hold to clear all)"
+                    title="Tap: Delete last digit | Hold: Clear number"
+            >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                    <line x1="18" y1="9" x2="12" y2="15"/>
+                    <line x1="12" y1="9" x2="18" y2="15"/>
+                </svg>
+            </button>
+        </div>
 
-      <div class="call-actions">
-        <!-- Call button — always visible when idle -->
-        <button type="button" id="button-call" class="primary-action dial-action-btn" aria-label="Call">
-          <svg class="dial-action-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36
+        <div id="dialpad" class="dialpad" aria-label="Dial pad">
+            <button type="button" class="dial-key" data-key="1">
+                <span class="dial-digit">1</span>
+                <small class="dial-sub">&nbsp;</small>
+            </button>
+            <button type="button" class="dial-key" data-key="2">
+                <span class="dial-digit">2</span>
+                <small class="dial-sub">ABC</small>
+            </button>
+            <button type="button" class="dial-key" data-key="3">
+                <span class="dial-digit">3</span>
+                <small class="dial-sub">DEF</small>
+            </button>
+            <button type="button" class="dial-key" data-key="4">
+                <span class="dial-digit">4</span>
+                <small class="dial-sub">GHI</small>
+            </button>
+            <button type="button" class="dial-key" data-key="5">
+                <span class="dial-digit">5</span>
+                <small class="dial-sub">JKL</small>
+            </button>
+            <button type="button" class="dial-key" data-key="6">
+                <span class="dial-digit">6</span>
+                <small class="dial-sub">MNO</small>
+            </button>
+            <button type="button" class="dial-key" data-key="7">
+                <span class="dial-digit">7</span>
+                <small class="dial-sub">PQRS</small>
+            </button>
+            <button type="button" class="dial-key" data-key="8">
+                <span class="dial-digit">8</span>
+                <small class="dial-sub">TUV</small>
+            </button>
+            <button type="button" class="dial-key" data-key="9">
+                <span class="dial-digit">9</span>
+                <small class="dial-sub">WXYZ</small>
+            </button>
+            <button type="button" class="dial-key dial-key-sym" data-key="*">
+                <span class="dial-digit">✳</span>
+            </button>
+            <button type="button" class="dial-key" data-key="0">
+                <span class="dial-digit">0</span>
+                <small class="dial-sub">+</small>
+            </button>
+            <button type="button" class="dial-key dial-key-sym" data-key="#">
+                <span class="dial-digit">#</span>
+            </button>
+        </div>
+
+        <div class="call-actions">
+            <!-- Call button — always visible when idle -->
+            <button type="button" id="button-call" class="primary-action dial-action-btn" aria-label="Call">
+                <svg class="dial-action-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36
                      1.02-.24 1.12.37 2.31.57 3.52.57.55 0 1 .45 1 1V20c0 .55-.45
                      1-1 1C10.29 21 3 13.71 3 4.5c0-.55.45-1 1-1h3.5c.55 0 1 .45
                      1 1 0 1.22.2 2.41.57 3.52.11.35.03.74-.24 1.02l-2.23 2.24z"/>
-          </svg>
-          <span class="dial-action-label">Call</span>
-        </button>
+                </svg>
+                <span class="dial-action-label">Call</span>
+            </button>
 
-        <!-- Hangup button — shown only during a call (via CSS/JS) -->
-        <button type="button" id="button-hangup" class="danger-action dial-action-btn" aria-label="Hang up">
-          <svg class="dial-action-icon" viewBox="0 0 24 24" fill="currentColor"
-               aria-hidden="true" style="transform:rotate(135deg)">
-            <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36
+            <!-- Hangup button — shown only during a call (via CSS/JS) -->
+            <button type="button" id="button-hangup" class="danger-action dial-action-btn" aria-label="Hang up">
+                <svg class="dial-action-icon" viewBox="0 0 24 24" fill="currentColor"
+                     aria-hidden="true" style="transform:rotate(135deg)">
+                    <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36
                      1.02-.24 1.12.37 2.31.57 3.52.57.55 0 1 .45 1 1V20c0 .55-.45
                      1-1 1C10.29 21 3 13.71 3 4.5c0-.55.45-1 1-1h3.5c.55 0 1 .45
                      1 1 0 1.22.2 2.41.57 3.52.11.35.03.74-.24 1.02l-2.23 2.24z"/>
-          </svg>
-          <span class="dial-action-label">End</span>
-        </button>
-      </div>
-
-      <!-- Live call timer -->
-      <div id="call-timer" class="call-timer" aria-live="polite" aria-label="Call duration">0:00</div>
-
-      <div id="volume-indicators" class="meter-card" aria-label="Audio level indicators">
-        <div class="meter-row">
-          <label for="input-volume">Mic Volume</label>
-          <div class="meter-track"><div id="input-volume" class="meter-bar"></div></div>
+                </svg>
+                <span class="dial-action-label">End</span>
+            </button>
         </div>
-        <div class="meter-row">
-          <label for="output-volume">Speaker Volume</label>
-          <div class="meter-track"><div id="output-volume" class="meter-bar"></div></div>
+
+        <!-- Live call timer -->
+        <div id="call-timer" class="call-timer" aria-live="polite" aria-label="Call duration">0:00</div>
+
+        <div id="volume-indicators" class="meter-card" aria-label="Audio level indicators">
+            <div class="meter-row">
+                <label for="input-volume">Mic Volume</label>
+                <div class="meter-track">
+                    <div id="input-volume" class="meter-bar"></div>
+                </div>
+            </div>
+            <div class="meter-row">
+                <label for="output-volume">Speaker Volume</label>
+                <div class="meter-track">
+                    <div id="output-volume" class="meter-bar"></div>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
     <!-- ② STATUS / WALLET CARD – second on mobile -->
     <section id="info" class="card status-card" aria-labelledby="app-title">
-      <div class="booth-hero">
-        <img class="booth-hero-img" src="/images/phone-booth-yellow.svg"
-             alt="Illustration of a classic yellow landline telephone booth" width="112" height="205" loading="lazy">
-      </div>
-      <div class="brand-row">
-        <div>
-          <p class="eyebrow">Internet Calling Platform</p>
-          <h2 id="app-title">Web Dialer & Browser Phone</h2>
+        <div class="booth-hero">
+            <img class="booth-hero-img" src="/images/phone-booth-yellow.svg"
+                 alt="Illustration of a classic yellow landline telephone booth" width="112" height="205"
+                 loading="lazy">
         </div>
-        <span id="device-status" class="status-pill status-loading">Connecting</span>
-      </div>
-
-      <!-- GUEST STATE: login prompt (hidden once signed in) -->
-      <div class="guest-only auth-guest-panel">
-        <p class="auth-hint">Sign in to start online calling. Call mobile and landline numbers across India from your browser. New users receive get Up To ₹6.00 welcome credit.</p>
-        <button type="button" id="btn-login" class="google-signin-button" style="margin-top:0.85rem;">
-          
-          <b>Simple Sign in</b>
-        </button>
-      </div>
-
-      <!-- SIGNED-IN STATE: wallet + user info (hidden until signed in) -->
-      <div class="auth-only" id="status-auth">
-        <div id="client-name" class="client-name">Welcome!</div>
-        <div class="wallet-summary">
-          <div>
-            <span class="wallet-label">Wallet</span>
-            <strong id="wallet-balance">₹0.00</strong>
-          </div>
-          <div>
-            <span class="wallet-label">Rate</span>
-            <strong id="wallet-rate">₹6/min</strong>
-          </div>
-          <button type="button" id="button-topup" class="secondary-action">Add money</button>
-          <button type="button" id="button-logout" class="secondary-action logout-action">Logout</button>
+        <div class="brand-row">
+            <div>
+                <p class="eyebrow">Internet Calling Platform</p>
+                <h2 id="app-title">Web Dialer & Browser Phone</h2>
+            </div>
+            <span id="device-status" class="status-pill status-loading">Connecting</span>
         </div>
-      </div>
+
+        <!-- GUEST STATE: login prompt (hidden once signed in) -->
+        <div class="guest-only auth-guest-panel">
+            <p class="auth-hint">Sign in to start online calling. Call mobile and landline numbers across India from
+                your browser. New users receive get Up To ₹6.00 welcome credit.</p>
+            <button type="button" id="btn-login" class="google-signin-button" style="margin-top:0.85rem;">
+
+                <b>Simple Sign in</b>
+            </button>
+        </div>
+
+        <!-- SIGNED-IN STATE: wallet + user info (hidden until signed in) -->
+        <div class="auth-only" id="status-auth">
+            <div id="client-name" class="client-name">Welcome!</div>
+            <div class="wallet-summary">
+                <div>
+                    <span class="wallet-label">Wallet</span>
+                    <strong id="wallet-balance">₹0.00</strong>
+                </div>
+                <div>
+                    <span class="wallet-label">Rate</span>
+                    <strong id="wallet-rate">₹6/min</strong>
+                </div>
+                <button type="button" id="button-topup" class="secondary-action">Add money</button>
+                <button type="button" id="button-logout" class="secondary-action logout-action">Logout</button>
+            </div>
+        </div>
     </section>
 
     <!-- ③ CALL HISTORY – third on mobile -->
     <section class="card history-card" aria-labelledby="history-title">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Billing</p>
-          <h2 id="history-title">Call History</h2>
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Billing</p>
+                <h2 id="history-title">Call History</h2>
+            </div>
         </div>
-      </div>
-      <div id="history-list" class="history-list">
-        <p class="empty-state">Sign in to view call history.</p>
-      </div>
+        <div id="history-list" class="history-list">
+            <p class="empty-state">Sign in to view call history.</p>
+        </div>
     </section>
 
     <!-- Audio device selection -->
     <section id="output-selection" class="card device-card" aria-labelledby="devices-title">
-      <div class="section-heading">
-        <p class="eyebrow">Audio setup</p>
-        <h2 id="devices-title">Devices</h2>
-      </div>
-      <label for="ringtone-devices">Ringtone Devices</label>
-      <select id="ringtone-devices" multiple></select>
-      <label for="speaker-devices">Speaker Devices</label>
-      <select id="speaker-devices" multiple></select>
-      <button type="button" id="get-devices" class="secondary-action">Refresh audio devices</button>
+        <div class="section-heading">
+            <p class="eyebrow">Audio setup</p>
+            <h2 id="devices-title">Devices</h2>
+        </div>
+        <label for="ringtone-devices">Ringtone Devices</label>
+        <select id="ringtone-devices" multiple></select>
+        <label for="speaker-devices">Speaker Devices</label>
+        <select id="speaker-devices" multiple></select>
+        <button type="button" id="get-devices" class="secondary-action">Refresh audio devices</button>
     </section>
 
     <!-- Activity log -->
     <section class="card log-card" aria-labelledby="log-title">
-      <div class="section-heading log-heading">
-        <div>
-          <p class="eyebrow">Activity</p>
-          <h2 id="log-title">Logs</h2>
+        <div class="section-heading log-heading">
+            <div>
+                <p class="eyebrow">Activity</p>
+                <h2 id="log-title">Logs</h2>
+            </div>
         </div>
-      </div>
-      <div id="log" role="log" aria-live="polite" aria-relevant="additions"></div>
+        <div id="log" role="log" aria-live="polite" aria-relevant="additions"></div>
     </section>
-  </main>
+</main>
 
-  <!-- Firebase setup notice (shown only when Firebase is not configured) -->
-  <div id="firebase-setup-notice" class="modal-backdrop" role="dialog" aria-modal="true"
-       aria-labelledby="setup-title" style="display:none;">
+<!-- Firebase setup notice (shown only when Firebase is not configured) -->
+<div id="firebase-setup-notice" class="modal-backdrop" role="dialog" aria-modal="true"
+     aria-labelledby="setup-title" style="display:none;">
     <div class="modal-card">
-      <p class="eyebrow" style="margin-bottom:0.5rem;">Configuration Required</p>
-      <h2 id="setup-title">Set up Google Sign-In</h2>
-      <p>Firebase client credentials are not configured. Follow these steps to enable Google Sign-In:</p>
-      <ol style="color:var(--muted);font-size:0.9rem;line-height:1.8;padding-left:1.4rem;margin-top:0.75rem;">
-        <li>Open <strong>Firebase Console</strong> → your project → <em>Project Settings</em> → <em>General</em></li>
-        <li>Scroll to <strong>Your apps</strong> → select your Web App (or create one)</li>
-        <li>Under <em>SDK setup and configuration</em>, copy the <code>firebaseConfig</code> values</li>
-        <li>Paste them into <code>src/main/resources/firebase-web-config.json</code></li>
-        <li>Restart the application</li>
-      </ol>
-      <p style="margin-top:0.75rem;font-size:0.85rem;">
-        For production: set environment variables
-        <code>FIREBASE_CLIENT_API_KEY</code> and <code>FIREBASE_CLIENT_APP_ID</code>.
-      </p>
-      <div class="modal-actions single-action" style="margin-top:1.2rem;">
-        <button type="button" id="btn-close-setup-notice" class="secondary-action">Close</button>
-      </div>
+        <p class="eyebrow" style="margin-bottom:0.5rem;">Configuration Required</p>
+        <h2 id="setup-title">Set up Google Sign-In</h2>
+        <p>Firebase client credentials are not configured. Follow these steps to enable Google Sign-In:</p>
+        <ol style="color:var(--muted);font-size:0.9rem;line-height:1.8;padding-left:1.4rem;margin-top:0.75rem;">
+            <li>Open <strong>Firebase Console</strong> → your project → <em>Project Settings</em> → <em>General</em>
+            </li>
+            <li>Scroll to <strong>Your apps</strong> → select your Web App (or create one)</li>
+            <li>Under <em>SDK setup and configuration</em>, copy the <code>firebaseConfig</code> values</li>
+            <li>Paste them into <code>src/main/resources/firebase-web-config.json</code></li>
+            <li>Restart the application</li>
+        </ol>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">
+            For production: set environment variables
+            <code>FIREBASE_CLIENT_API_KEY</code> and <code>FIREBASE_CLIENT_APP_ID</code>.
+        </p>
+        <div class="modal-actions single-action" style="margin-top:1.2rem;">
+            <button type="button" id="btn-close-setup-notice" class="secondary-action">Close</button>
+        </div>
     </div>
-  </div>
+</div>
 
-  <!-- Simple Login Modal (shown when enableGoogleSignIn = false) -->
-  <div id="simple-login-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="simple-login-title">
+<!-- Simple Login Modal (shown when enableGoogleSignIn = false) -->
+<div id="simple-login-modal" class="modal-backdrop" role="dialog" aria-modal="true"
+     aria-labelledby="simple-login-title">
     <div class="modal-card auth-modal-card">
-      <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>
-      <h2 id="simple-login-title">Sign in to call</h2>
-      <p>Enter your mobile number to start calling. New users receive a get Up To ₹6.00 welcome credit.</p>
-      <form id="simple-login-form" class="login-form" style="margin-top:1.25rem;" novalidate>
-        <label for="simple-login-number">Mobile number <span class="required-star">*</span></label>
-        <input id="simple-login-number" type="tel" inputmode="tel" autocomplete="tel"
-               placeholder="+91 98765 43210" required />
-        <!-- Hidden field populated by geolocation; "x" is sent when unavailable -->
-        <input id="simple-login-location" type="hidden" value="" />
-        <button type="submit" id="btn-simple-login-submit" class="primary-action" style="margin-top:0.25rem;">Continue</button>
-      </form>
-      <p class="modal-footnote">
-        By continuing you agree to our <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms &amp; Conditions</a>.
-      </p>
-      <button type="button" id="btn-close-simple-login" class="modal-close-btn" aria-label="Close">&times;</button>
+        <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>
+        <h2 id="simple-login-title">Sign in to call</h2>
+        <p>Enter your mobile number to start calling. New users receive a get Up To ₹6.00 welcome credit.</p>
+        <form id="simple-login-form" class="login-form" style="margin-top:1.25rem;" novalidate>
+            <label for="simple-login-number">Mobile number <span class="required-star">*</span></label>
+            <input id="simple-login-number" type="tel" inputmode="tel" autocomplete="tel"
+                   placeholder="+91 98765 43210" required/>
+            <!-- Hidden field populated by geolocation; "x" is sent when unavailable -->
+            <input id="simple-login-location" type="hidden" value=""/>
+            <button type="submit" id="btn-simple-login-submit" class="primary-action" style="margin-top:0.25rem;">
+                Continue
+            </button>
+        </form>
+        <p class="modal-footnote">
+            By continuing you agree to our <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms
+            &amp; Conditions</a>.
+        </p>
+        <button type="button" id="btn-close-simple-login" class="modal-close-btn" aria-label="Close">&times;</button>
     </div>
-  </div>
+</div>
 
-  <!-- Google Sign-In Modal -->
-  <div id="google-auth-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+<!-- Google Sign-In Modal -->
+<div id="google-auth-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="auth-title">
     <div class="modal-card auth-modal-card">
-      <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>
-      <h2 id="auth-title">Sign in to call</h2>
-      <p>Sign in with your Google account to make calls. You'll receive a get Up To ₹6.00 welcome credit on first sign-in.</p>
-      <div class="modal-actions single-action" style="margin-top:1.5rem;">
-        <button type="button" id="btn-google-signin" class="google-signin-button">
-          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          </svg>
-          Continue with Google
-        </button>
-      </div>
-      <p class="modal-footnote">
-        By signing in you agree to our <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms &amp; Conditions</a>.
-      </p>
-      <button type="button" id="btn-close-auth" class="modal-close-btn" aria-label="Close">&times;</button>
+        <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>
+        <h2 id="auth-title">Sign in to call</h2>
+        <p>Sign in with your Google account to make calls. You'll receive a get Up To ₹6.00 welcome credit on first
+            sign-in.</p>
+        <div class="modal-actions single-action" style="margin-top:1.5rem;">
+            <button type="button" id="btn-google-signin" class="google-signin-button">
+                <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+                    <path fill="#EA4335"
+                          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4"
+                          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05"
+                          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853"
+                          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Continue with Google
+            </button>
+        </div>
+        <p class="modal-footnote">
+            By signing in you agree to our <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms
+            &amp; Conditions</a>.
+        </p>
+        <button type="button" id="btn-close-auth" class="modal-close-btn" aria-label="Close">&times;</button>
     </div>
-  </div>
+</div>
 
-  <!-- Profile Setup Modal -->
-  <div id="profile-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+<!-- Profile Setup Modal -->
+<div id="profile-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="profile-title">
     <div class="modal-card">
-      <p class="eyebrow" style="margin-bottom:0.5rem;">One more step</p>
-      <h2 id="profile-title">Complete your profile</h2>
-      <p>We need your mobile number to set up your MakeCall account.</p>
+        <p class="eyebrow" style="margin-bottom:0.5rem;">One more step</p>
+        <h2 id="profile-title">Complete your profile</h2>
+        <p>We need your mobile number to set up your MakeCall account.</p>
 
-      <form id="profile-form" class="login-form" style="margin-top:1rem;" novalidate>
-        <label for="profile-name">Your Name <span class="required-star">*</span></label>
-        <input id="profile-name" type="text" autocomplete="name"
-               placeholder="Enter your name" required />
+        <form id="profile-form" class="login-form" style="margin-top:1rem;" novalidate>
+            <label for="profile-name">Your Name <span class="required-star">*</span></label>
+            <input id="profile-name" type="text" autocomplete="name"
+                   placeholder="Enter your name" required/>
 
-        <input id="profile-location" type="hidden" />
+            <input id="profile-location" type="hidden"/>
 
-        <label class="terms-check">
-          <input id="profile-terms" type="checkbox" required />
-          <span>I accept the
+            <label class="terms-check">
+                <input id="profile-terms" type="checkbox" required/>
+                <span>I accept the
             <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms &amp; Conditions</a>
           </span>
-        </label>
+            </label>
 
-        <button type="submit" class="primary-action">Save &amp; Continue</button>
-      </form>
+            <button type="submit" class="primary-action">Save &amp; Continue</button>
+        </form>
     </div>
-  </div>
+</div>
 
-  <!-- Inline Terms Modal (quick summary) -->
-  <div id="terms-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+<!-- Inline Terms Modal (quick summary) -->
+<div id="terms-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="terms-title">
     <div class="modal-card">
-      <h2 id="terms-title">Terms and Conditions</h2>
-      <p>This service must not be used for illegal, fraudulent, abusive, or harmful purposes.</p>
-      <p>You need at least <strong>₹1.00</strong> in your wallet before placing a call. Calls are charged at ₹6 per minute, calculated per second from the moment the call starts ringing.</p>
-      <p>Users are responsible for all calls made from their account. Do <strong>not</strong> use this service for emergency calls (112 / 911).</p>
-      <p>You must provide accurate personal information. Misuse may result in account suspension or permanent blocking.</p>
-      <p>Read the full <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms &amp; Conditions</a>.</p>
-      <div class="modal-actions">
-        <button type="button" id="accept-terms" class="primary-action">Accept</button>
-        <button type="button" id="close-terms" class="secondary-action">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dashboard Announcement Modal -->
-  <div id="dashboard-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="dashboard-title" style="display: none;">
-    <div class="modal-card">
-      <h2 id="dashboard-title">&#128226; Announcement</h2>
-      <p id="dashboard-message-text"></p>
-      <div class="modal-actions single-action">
-        <button type="button" id="close-dashboard" class="primary-action">Got it</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Maintenance Mode Modal -->
-  <div id="maintenance-modal" class="modal-backdrop maintenance-modal" role="dialog" aria-modal="true" aria-labelledby="maintenance-title" style="display: none;">
-    <div class="modal-card">
-      <h2 id="maintenance-title">&#128295; Maintenance Mode</h2>
-      <p id="maintenance-message-text"></p>
-      <div class="modal-actions single-action">
-        <button type="button" id="close-maintenance" class="primary-action">I understand</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Recharge Amount Modal (replaces window.prompt) -->
-  <div id="recharge-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="recharge-title">
-    <div class="modal-card">
-      <p class="eyebrow" style="margin-bottom:0.5rem;">Add Money</p>
-      <h2 id="recharge-title">Recharge Wallet</h2>
-      <p>Enter the amount you want to add to your wallet (minimum ₹5).</p>
-      <form id="recharge-form" class="login-form" style="margin-top:1rem;" novalidate>
-        <label for="recharge-amount">Amount (₹) <span class="required-star">*</span></label>
-        <input id="recharge-amount" type="number" inputmode="numeric" min="5" max="10000" placeholder="e.g. 50" required />
-<!--        <label for="recharge-gateway">Payment gateway <span class="required-star">*</span></label>
-        <select id="recharge-gateway" required>
-          <option value="razorpay" selected>Razorpay</option>
-          <option value="cashfree">Cashfree</option>
-        </select>-->
-        <div class="modal-actions" style="margin-top:0.5rem;">
-          <button type="submit" id="btn-recharge-confirm" class="primary-action">Pay now</button>
-          <button type="button" id="btn-recharge-cancel" class="secondary-action">Cancel</button>
+        <h2 id="terms-title">Terms and Conditions</h2>
+        <p>This service must not be used for illegal, fraudulent, abusive, or harmful purposes.</p>
+        <p>You need at least <strong>₹1.00</strong> in your wallet before placing a call. Calls are charged at ₹6 per
+            minute, calculated per second from the moment the call starts ringing.</p>
+        <p>Users are responsible for all calls made from their account. Do <strong>not</strong> use this service for
+            emergency calls (112 / 911).</p>
+        <p>You must provide accurate personal information. Misuse may result in account suspension or permanent
+            blocking.</p>
+        <p>Read the full <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms &amp; Conditions</a>.
+        </p>
+        <div class="modal-actions">
+            <button type="button" id="accept-terms" class="primary-action">Accept</button>
+            <button type="button" id="close-terms" class="secondary-action">Close</button>
         </div>
-      </form>
     </div>
-  </div>
+</div>
 
-  <!-- Permissions Check Modal -->
-  <div id="permissions-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="permissions-title">
+<!-- Dashboard Announcement Modal -->
+<div id="dashboard-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="dashboard-title"
+     style="display: none;">
+    <div class="modal-card">
+        <h2 id="dashboard-title">&#128226; Announcement</h2>
+        <p id="dashboard-message-text"></p>
+        <div class="modal-actions single-action">
+            <button type="button" id="close-dashboard" class="primary-action">Got it</button>
+        </div>
+    </div>
+</div>
+
+<!-- Maintenance Mode Modal -->
+<div id="maintenance-modal" class="modal-backdrop maintenance-modal" role="dialog" aria-modal="true"
+     aria-labelledby="maintenance-title" style="display: none;">
+    <div class="modal-card">
+        <h2 id="maintenance-title">&#128295; Maintenance Mode</h2>
+        <p id="maintenance-message-text"></p>
+        <div class="modal-actions single-action">
+            <button type="button" id="close-maintenance" class="primary-action">I understand</button>
+        </div>
+    </div>
+</div>
+
+<!-- Recharge Amount Modal (replaces window.prompt) -->
+<div id="recharge-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="recharge-title">
+    <div class="modal-card">
+        <p class="eyebrow" style="margin-bottom:0.5rem;">Add Money</p>
+        <h2 id="recharge-title">Recharge Wallet</h2>
+        <p>Enter the amount you want to add to your wallet (minimum ₹5).</p>
+        <form id="recharge-form" class="login-form" style="margin-top:1rem;" novalidate>
+            <label for="recharge-amount">Amount (₹) <span class="required-star">*</span></label>
+            <input id="recharge-amount" type="number" inputmode="numeric" min="5" max="10000" placeholder="e.g. 50"
+                   required/>
+            <!--        <label for="recharge-gateway">Payment gateway <span class="required-star">*</span></label>
+                    <select id="recharge-gateway" required>
+                      <option value="razorpay" selected>Razorpay</option>
+                      <option value="cashfree">Cashfree</option>
+                    </select>-->
+            <div class="modal-actions" style="margin-top:0.5rem;">
+                <button type="submit" id="btn-recharge-confirm" class="primary-action">Pay now</button>
+                <button type="button" id="btn-recharge-cancel" class="secondary-action">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Permissions Check Modal -->
+<div id="permissions-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="permissions-title">
     <div class="modal-card permissions-modal-card">
-      <p class="eyebrow" style="margin-bottom:0.5rem;">App Permissions</p>
-      <h2 id="permissions-title">Microphone Access</h2>
-      <p>This app requires microphone access to make voice calls. Check and grant permission below.</p>
+        <p class="eyebrow" style="margin-bottom:0.5rem;">App Permissions</p>
+        <h2 id="permissions-title">Microphone Access</h2>
+        <p>This app requires microphone access to make voice calls. Check and grant permission below.</p>
 
-      <!-- Status row -->
-      <div class="perm-status-row" id="perm-mic-row">
-        <svg class="perm-row-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 1 1 2 0 8 8 0 0 1-7 7.938V22h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.062A8 8 0 0 1 4 12a1 1 0 0 1 1-1z"/>
-        </svg>
-        <span class="perm-row-label">Microphone</span>
-        <span class="perm-badge perm-badge-checking" id="perm-mic-badge">Checking…</span>
-      </div>
+        <!-- Status row -->
+        <div class="perm-status-row" id="perm-mic-row">
+            <svg class="perm-row-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
+                 aria-hidden="true">
+                <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 1 1 2 0 8 8 0 0 1-7 7.938V22h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.062A8 8 0 0 1 4 12a1 1 0 0 1 1-1z"/>
+            </svg>
+            <span class="perm-row-label">Microphone</span>
+            <span class="perm-badge perm-badge-checking" id="perm-mic-badge">Checking…</span>
+        </div>
 
-      <!-- Hint text (updates dynamically) -->
-      <p class="perm-hint" id="perm-mic-hint" style="display:none;"></p>
+        <!-- Hint text (updates dynamically) -->
+        <p class="perm-hint" id="perm-mic-hint" style="display:none;"></p>
 
-      <!-- Blocked instructions (shown only when denied) -->
-      <div class="perm-denied-box" id="perm-denied-box" style="display:none;">
-        <strong>How to unblock the microphone:</strong>
-        <ol>
-          <li>Tap the 🔒 lock / info icon in your browser's address bar</li>
-          <li>Find <em>Microphone</em> and change it to <strong>Allow</strong></li>
-          <li>Reload this page, then try again</li>
-        </ol>
-      </div>
+        <!-- Blocked instructions (shown only when denied) -->
+        <div class="perm-denied-box" id="perm-denied-box" style="display:none;">
+            <strong>How to unblock the microphone:</strong>
+            <ol>
+                <li>Tap the 🔒 lock / info icon in your browser's address bar</li>
+                <li>Find <em>Microphone</em> and change it to <strong>Allow</strong></li>
+                <li>Reload this page, then try again</li>
+            </ol>
+        </div>
 
-      <div class="modal-actions perm-modal-actions" style="margin-top:1.25rem;">
-        <button type="button" id="btn-request-mic" class="primary-action">Allow Microphone</button>
-        <button type="button" id="btn-close-permissions" class="secondary-action">Close</button>
-      </div>
+        <div class="modal-actions perm-modal-actions" style="margin-top:1.25rem;">
+            <button type="button" id="btn-request-mic" class="primary-action">Allow Microphone</button>
+            <button type="button" id="btn-close-permissions" class="secondary-action">Close</button>
+        </div>
 
-      <button type="button" id="btn-close-permissions-x" class="modal-close-btn" aria-label="Close">&times;</button>
+        <button type="button" id="btn-close-permissions-x" class="modal-close-btn" aria-label="Close">&times;</button>
     </div>
-  </div>
+</div>
 
-  <!-- Toast notifications -->
-  <div id="toast-container" class="toast-container" aria-live="assertive" aria-atomic="false"></div>
+<!-- Toast notifications -->
+<div id="toast-container" class="toast-container" aria-live="assertive" aria-atomic="false"></div>
 
-  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+<footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
 
-  <!-- Firebase compat SDK (Google Sign-In) — only loaded when the feature flag is enabled -->
-  <th:block th:if="${enableGoogleSignIn}">
+<!-- Firebase compat SDK (Google Sign-In) — only loaded when the feature flag is enabled -->
+<th:block th:if="${enableGoogleSignIn}">
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  </th:block>
+</th:block>
 
-  <!-- Twilio Voice JavaScript SDK v2 -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.12.3/dist/twilio.min.js"></script>
+<!-- Twilio Voice JavaScript SDK v2 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.12.3/dist/twilio.min.js"></script>
 
-  <!-- Razorpay: NOT loaded here — loaded lazily on first "Add money" click (see quickstart.js) -->
+<!-- Razorpay: NOT loaded here — loaded lazily on first "Add money" click (see quickstart.js) -->
 
-  <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-  <!-- Main application script -->
-  <script type="text/javascript" src="/js/quickstart.js?v=google-auth-1"></script>
+<!-- Main application script -->
+<script type="text/javascript" src="/js/quickstart.js?v=google-auth-1"></script>
 
-  <!-- Dashboard / Maintenance boot scripts -->
-  <script>
+<!-- Dashboard / Maintenance boot scripts -->
+<script>
     document.addEventListener('DOMContentLoaded', function () {
-      if (window.maintenanceMode && window.maintenanceMode.enabled) {
-        var msg   = window.maintenanceMode.message || 'The application is currently under maintenance. Please try again later.';
-        var modal = document.getElementById('maintenance-modal');
-        document.getElementById('maintenance-message-text').textContent = msg;
-        modal.style.display = 'flex';
+        if (window.maintenanceMode && window.maintenanceMode.enabled) {
+            var msg = window.maintenanceMode.message || 'The application is currently under maintenance. Please try again later.';
+            var modal = document.getElementById('maintenance-modal');
+            document.getElementById('maintenance-message-text').textContent = msg;
+            modal.style.display = 'flex';
 
-        var callButton  = document.getElementById('button-call');
-        var topUpButton = document.getElementById('button-topup');
-        if (callButton)  { callButton.disabled  = true; callButton.title  = msg; }
-        if (topUpButton) { topUpButton.disabled = true; topUpButton.title = msg; }
+            var callButton = document.getElementById('button-call');
+            var topUpButton = document.getElementById('button-topup');
+            if (callButton) {
+                callButton.disabled = true;
+                callButton.title = msg;
+            }
+            if (topUpButton) {
+                topUpButton.disabled = true;
+                topUpButton.title = msg;
+            }
 
-        document.getElementById('close-maintenance').addEventListener('click', function () {
-          modal.style.display = 'none';
-        });
-        return;
-      }
-
-      if (window.dashboardMessage && window.dashboardMessage.enabled) {
-        var message = window.dashboardMessage.message;
-        if (message && message.trim() !== '') {
-          var modal    = document.getElementById('dashboard-modal');
-          var closeBtn = document.getElementById('close-dashboard');
-          document.getElementById('dashboard-message-text').textContent = message;
-          modal.style.display = 'flex';
-
-          closeBtn.addEventListener('click', function () { modal.style.display = 'none'; });
-          modal.addEventListener('click', function (e) {
-            if (e.target === modal) modal.style.display = 'none';
-          });
+            document.getElementById('close-maintenance').addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+            return;
         }
-      }
+
+        if (window.dashboardMessage && window.dashboardMessage.enabled) {
+            var message = window.dashboardMessage.message;
+            if (message && message.trim() !== '') {
+                var modal = document.getElementById('dashboard-modal');
+                var closeBtn = document.getElementById('close-dashboard');
+                document.getElementById('dashboard-message-text').textContent = message;
+                modal.style.display = 'flex';
+
+                closeBtn.addEventListener('click', function () {
+                    modal.style.display = 'none';
+                });
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) modal.style.display = 'none';
+                });
+            }
+        }
     });
-  </script>
+</script>
 </body>
 </html>

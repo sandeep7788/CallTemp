@@ -268,11 +268,7 @@ label {
   top: 8%; right: 18%;
   animation: blob-5 36s ease-in-out infinite;
 }
-  background: radial-gradient(circle at center,
-    rgba(22,163,74,.16) 0%, transparent 65%);
-  top: 55%; left: -8%;
-  animation: blob-4 34s ease-in-out infinite;
-}
+
 .bg-blob-5 {
   width: 28vmax; height: 28vmax;
   background: radial-gradient(circle at center,

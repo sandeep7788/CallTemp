@@ -21,7 +21,8 @@ public class TwilioClientSpringApplication {
 ━━━ Checking prerequisites ━━━-->*/
 /*
 
-ssh -6 -i mainvm.pem ec2-user@2406:da1a:3.235.248.57
+ssh -6 -i main1.pem ec2-user@2406:da1a:3.235.248.57
+ssh -6 -i mainvm.pem ec2-user@2406:da1a:13.235.248.57
 * */
 
 
@@ -50,3 +51,16 @@ Fields: createdAt (Descending) alone, collection-group scoped — covers the unf
 The fastest way to get the exact index definition is to trigger the error once and check your app logs for the FAILED_PRECONDITION message — it contains a one-click "create this index" link.
 
 Want me to also add log.error(...) in those repository catch blocks (currently the real Firestore exception is swallowed from logs, not just the response) and check in a firestore.indexes.json so these indexes are defined as code for future deploys?*/
+
+
+/*
+./deploy.sh \
+        --jar target/app.jar \
+        --host "2406:da1a:4d8:1d01:9666:e8e5:4a25:1f48" \
+        --key /home/sandeep/Downloads/mainvm.pem \
+        --bucket makecall-jar-bucket \
+        --skip-build
+
+3STOBvpAUqyivS1G5ZwvAvn+bRJpdMFtNzm6O5X6
+867344465598*/
+/*ssh -i ~/Downloads/mainvm.pem ec2-user@13.235.248.57*/
