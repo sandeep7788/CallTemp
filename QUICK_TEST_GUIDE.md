@@ -46,7 +46,7 @@ curl -X POST http://localhost:8080/user/wallet/payment/order \
     "amount": 100.0,
     "amountPaise": 10000,
     "name": "MakeCall Wallet",
-    "description": "Wallet recharge ₹100.00",
+    "description": "Wallet recharge ₹60.00",
     "prefillName": "User Name",
     "prefillContact": "+919876543210",
     "gateway": "cashfree",

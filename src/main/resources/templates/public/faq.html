@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <th:block th:replace="~{fragments/site :: seo(${pageTitle}, ${pageDescription}, ${pageKeywords}, ${canonicalPath}, 'website')}"></th:block>
+  <th:block th:replace="~{fragments/site :: structuredData(${pageTitle}, ${pageDescription}, ${canonicalPath})}"></th:block>
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/site :: publicNav(${activePage})}"></header>
+
+  <main class="content-page" id="main-content">
+    <section class="content-hero card">
+      <p class="eyebrow">MakeCall FAQ</p>
+      <h1>Online Calling, Number Privacy &amp; Acceptable Use – Frequently Asked Questions</h1>
+      <p class="content-lead">Answers about how MakeCall's browser-based online calling platform works in India, what actually happens to your number when you call, and what MakeCall does not support — including unknown, private, secret, anonymous and prank calling.</p>
+    </section>
+
+    <section class="card content-card">
+      <h2>Private, Unknown and Secret Calls: What You Should Know</h2>
+      <p>People search for things like <em>"unknown call"</em>, <em>"secret call"</em>, <em>"private calling"</em> or <em>"कॉल का पता न चले"</em> for very different reasons — some want to stop their personal number from being shared, some are curious about hidden-number services, and some are asking whether an app can make a call look completely untraceable. These are not all the same thing, so here is what each term actually means and what MakeCall does:</p>
+      <ul>
+        <li><strong>Private calling</strong> usually means the person you call doesn't see your personal mobile number. MakeCall does this by design — every call is routed through MakeCall's own virtual number, not your SIM.</li>
+        <li><strong>Unknown caller ID / hidden number call</strong> usually means the recipient's phone shows "Unknown" or no number at all. MakeCall does not do this — the recipient always sees a real, valid virtual number.</li>
+        <li><strong>Secret or anonymous calling</strong> usually implies the call can't be traced back to the caller. MakeCall requires sign-in and keeps call records for billing and support, so calls are never anonymous or untraceable.</li>
+        <li><strong>Internet / browser calling</strong> is simply what MakeCall is: a web dialer that places real voice calls to mobile and landline (PSTN) numbers over the internet, from your browser, without an app.</li>
+      </ul>
+      <p>In short: MakeCall gives you genuine number privacy (your personal number is never revealed), but it is not an anonymous-calling, number-spoofing or prank-calling service.</p>
+      <p>You might have typed this question in Hindi as <em>"कॉल का पता न चले"</em>, or in Roman script as <em>"call ka pata na chale"</em>, <em>"bina number dikhaye call"</em>, <em>"number chhupa kar call"</em> or <em>"secret call kaise kare"</em> — they're all really asking the same thing, and the Hindi/Hinglish FAQ section below answers it directly.</p>
+    </section>
+
+    <section class="card content-card" aria-labelledby="faq-general-title">
+      <h2 id="faq-general-title">General Questions</h2>
+
+      <div class="faq-item">
+        <h3>How do I make online calls with MakeCall?</h3>
+        <p>Sign in to MakeCall.in, add credit to your wallet, enter the phone number on the dial pad and tap Call. You can call mobile and landline (PSTN) numbers in India directly from your browser — no app download needed.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>What is the MakeCall calling rate?</h3>
+        <p>MakeCall charges ₹6 per minute for calls to mobile and landline numbers, billed per second from the moment your call connects.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can I call landline numbers with MakeCall?</h3>
+        <p>Yes. MakeCall supports both mobile and landline (PSTN) numbers in India — enter the number with its STD code and tap Call.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Do I need to download an app to use MakeCall?</h3>
+        <p>No. MakeCall works entirely inside your web browser using WebRTC technology. Just visit makecall.in, sign in, and start calling — no app install required.</p>
+      </div>
+    </section>
+
+    <section class="card content-card" aria-labelledby="faq-privacy-title">
+      <h2 id="faq-privacy-title">Number Privacy, Unknown Calls &amp; Prank Calls</h2>
+
+      <div class="faq-item">
+        <h3>Can I make an unknown, private or secret call with MakeCall?</h3>
+        <p>MakeCall is an online calling platform for making regular voice calls to mobile and landline numbers — it is not an anonymous or secret-calling service. When you call someone through MakeCall, the person you're calling sees a MakeCall-assigned virtual number, not your personal mobile number. That gives you a genuine layer of number privacy, but you cannot make the call appear as "Unknown", blank or untraceable, and you cannot choose or spoof a custom caller ID.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Does MakeCall hide or mask my personal phone number from the person I call?</h3>
+        <p>Yes, in the sense that your personal mobile number is never shown to the person you call — calls are routed through MakeCall's own virtual number, not your SIM number. This is different from a "hidden number" or "unknown caller" service: the recipient still sees a real, valid number on their phone, just not yours.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can I use MakeCall to make anonymous calls that cannot be traced back to me?</h3>
+        <p>No. MakeCall requires sign-in and links every call to your account for billing, and call records are retained as described in our Privacy Policy. It is not designed for anonymous or untraceable calling.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can I use MakeCall for prank calls?</h3>
+        <p>No. MakeCall's <a class="link-button" th:href="@{/terms}">Terms &amp; Conditions</a> explicitly prohibit prank, hoax, harassing or misleading calls. MakeCall is intended for genuine personal and business communication, not entertainment-style prank calling.</p>
+      </div>
+    </section>
+
+    <section class="card content-card" lang="hi" aria-labelledby="faq-hindi-title">
+      <h2 id="faq-hindi-title">गोपनीयता संबंधी सवाल (Privacy FAQs in Hindi &amp; Hinglish)</h2>
+      <p>भारत में MakeCall इस्तेमाल करने वाले यूज़र्स अक्सर नंबर प्राइवेसी को लेकर ये सवाल पूछते हैं:</p>
+
+      <div class="faq-item">
+        <h3>कॉल का पता न चले — क्या ऐसा MakeCall से संभव है?</h3>
+        <p>MakeCall एक ऑनलाइन कॉलिंग प्लेटफ़ॉर्म है, कोई सीक्रेट या एनोनिमस कॉलिंग सर्विस नहीं। MakeCall से कॉल करने पर सामने वाले व्यक्ति को आपका पर्सनल मोबाइल नंबर नहीं दिखता — इसके बजाय MakeCall का अपना वर्चुअल नंबर दिखता है, जिससे आपकी नंबर प्राइवेसी बनी रहती है। लेकिन कॉल "Unknown" या खाली नंबर के रूप में नहीं दिखाई जा सकती, कॉल पूरी तरह untraceable नहीं होती, और आप कोई कस्टम नंबर चुन या छुपा नहीं सकते।</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Bina number dikhaye ya number chhupa kar call — kya MakeCall se ho sakta hai?</h3>
+        <p>MakeCall se call karne par aapka personal mobile number receiver ko nahi dikhta – uske jagah MakeCall ka apna virtual number dikhta hai, isliye number privacy real hai. Lekin yeh "hidden number call" ya "unknown number se call" jaisi service nahi hai: receiver ko ek valid number dikhta hai (blank ya "Unknown" nahi), aur account sign-in + call history ki wajah se call anonymous ya untraceable nahi hoti.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>क्या MakeCall प्रैंक कॉल के लिए इस्तेमाल किया जा सकता है? (Prank call kaise kare)</h3>
+        <p>नहीं। MakeCall की <a class="link-button" th:href="@{/terms}">नियम एवं शर्तें</a> प्रैंक, धमकी या भ्रामक कॉल की अनुमति नहीं देतीं। MakeCall केवल असली पर्सनल और बिज़नेस कम्युनिकेशन के लिए है, prank ya entertainment calling app nahi hai।</p>
+      </div>
+    </section>
+
+    <section class="card content-card">
+      <h2>Still have questions?</h2>
+      <p>Read our <a class="link-button" th:href="@{/terms}">Terms &amp; Conditions</a> and <a class="link-button" th:href="@{/privacy-policy}">Privacy Policy</a> for full details, or <a class="link-button" th:href="@{/contact}">contact MakeCall support</a>.</p>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/site :: publicFooter(${activePage})}"></footer>
+</body>
+</html>

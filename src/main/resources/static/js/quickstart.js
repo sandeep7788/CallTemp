@@ -593,7 +593,7 @@ $(function () {
       setSignedIn(false);                                            // show guest panel, hide auth panels
       document.getElementById('output-selection').style.display = 'none';
       resetCallUi();
-      updateWallet({ walletBalance: 0, ratePerMinute: 10, minimumBalance: 1, canCall: false });
+      updateWallet({ walletBalance: 0, ratePerMinute: 6, minimumBalance: 1, canCall: false });
       historyList.innerHTML = '<p class="empty-state">Sign in to view call history.</p>';
       setClientNameUI(googleSignInEnabled ? 'Sign in with Google to start calling.' : 'Enter your number to start calling.');
       setDeviceStatus('Ready to Call', 'offline');
@@ -1152,7 +1152,7 @@ $(function () {
       activeCall = call;
       callAnswerTime = Date.now();   // BILLING starts from answered time
       if (!callRingTime) callRingTime = callAnswerTime; // fallback if ringing event missed
-      const rate = wallet && wallet.ratePerMinute ? wallet.ratePerMinute : 10;
+      const rate = wallet && wallet.ratePerMinute ? wallet.ratePerMinute : 6;
       log('Call answered! Billing starts now at ₹' + money(rate) + '/min.');
       setDeviceStatus('In Call', 'calling');
       setCallState('active');
@@ -1567,7 +1567,7 @@ $(function () {
     // Use cached wallet data for minimumBalance/ratePerMinute if available;
     // refreshWallet() will update with server values momentarily
     var minBalance = wallet && wallet.minimumBalance ? wallet.minimumBalance : 1;
-    var rate       = wallet && wallet.ratePerMinute  ? wallet.ratePerMinute  : 10;
+    var rate       = wallet && wallet.ratePerMinute  ? wallet.ratePerMinute  : 6;
     var balance    = Number(session.walletBalance) || 0;
     updateWallet({
       walletBalance:  balance,

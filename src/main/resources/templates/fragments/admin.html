@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header th:fragment="adminNav()" class="site-header admin-header" role="banner">
+  <nav class="site-nav admin-topbar" aria-label="Admin navigation">
+    <a class="site-brand" th:href="@{/admin}" aria-label="MakeCall admin home">
+      <span class="site-brand-mark admin-brand-mark" aria-hidden="true">M</span>
+      <span>
+        <strong>MakeCall <span class="admin-badge">ADMIN</span></strong>
+        <small id="admin-greeting">Loading&hellip;</small>
+      </span>
+    </a>
+    <div class="site-nav-links admin-nav-links" id="admin-nav-links">
+      <a href="#dashboard" data-section="dashboard" class="admin-nav-link is-active">
+        <span class="tab-icon" aria-hidden="true">&#128202;</span>
+        <span class="tab-label">Dashboard</span>
+      </a>
+      <a href="#users" data-section="users" class="admin-nav-link">
+        <span class="tab-icon" aria-hidden="true">&#128101;</span>
+        <span class="tab-label">Users</span>
+      </a>
+      <a href="#wallets" data-section="wallets" class="admin-nav-link">
+        <span class="tab-icon" aria-hidden="true">&#128176;</span>
+        <span class="tab-label">Wallets</span>
+      </a>
+      <a href="#transactions" data-section="transactions" class="admin-nav-link">
+        <span class="tab-icon" aria-hidden="true">&#128257;</span>
+        <span class="tab-label">Transactions</span>
+      </a>
+      <a th:href="@{/}" class="admin-nav-link admin-nav-exit">
+        <span class="tab-icon" aria-hidden="true">&#8617;</span>
+        <span class="tab-label">Exit</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+</body>
+</html>

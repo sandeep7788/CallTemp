@@ -63,6 +63,68 @@ public class UserAccountRepository extends BaseFirebaseRepository {
         }
     }
 
+    // ─── Admin listing & aggregates ────────────────────────────────────────────
+
+    public List<UserAccount> findAll(int limit) {
+        try {
+            QuerySnapshot qs = db.collection(COLLECTION).orderBy("createdAt", Query.Direction.DESCENDING).limit(limit).get().get();
+            List<UserAccount> result = new ArrayList<>();
+            for (DocumentSnapshot doc : qs.getDocuments()) {
+                result.add(fromDoc(doc));
+            }
+            return result;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase findAll UserAccount failed", e);
+        }
+    }
+
+    public List<UserAccount> findByBlocked(boolean blocked, int limit) {
+        try {
+            QuerySnapshot qs = db.collection(COLLECTION).whereEqualTo("isBlocked", blocked)
+                    .orderBy("createdAt", Query.Direction.DESCENDING).limit(limit).get().get();
+            List<UserAccount> result = new ArrayList<>();
+            for (DocumentSnapshot doc : qs.getDocuments()) {
+                result.add(fromDoc(doc));
+            }
+            return result;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase findByBlocked UserAccount failed", e);
+        }
+    }
+
+    public long countAll() {
+        try {
+            AggregateQuerySnapshot snap = db.collection(COLLECTION).count().get().get();
+            return snap.getCount();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase countAll UserAccount failed", e);
+        }
+    }
+
+    public long countByBlocked(boolean blocked) {
+        try {
+            AggregateQuerySnapshot snap = db.collection(COLLECTION).whereEqualTo("isBlocked", blocked).count().get().get();
+            return snap.getCount();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase countByBlocked UserAccount failed", e);
+        }
+    }
+
+    /**
+     * Sum of {@code walletBalance} across all users, computed server-side via a
+     * Firestore aggregation query (avoids loading every user document into memory).
+     */
+    public double sumWalletBalance() {
+        try {
+            AggregateField sumField = AggregateField.sum("walletBalance");
+            AggregateQuerySnapshot snap = db.collection(COLLECTION).aggregate(sumField).get().get();
+            Object sum = snap.get(sumField);
+            return sum instanceof Number n ? n.doubleValue() : 0.0;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase sumWalletBalance failed", e);
+        }
+    }
+
     // ─── Write ───────────────────────────────────────────────────────────────
 
     public UserAccount save(UserAccount user) {
@@ -124,6 +186,7 @@ public class UserAccountRepository extends BaseFirebaseRepository {
         u.setTermsAccepted(getBoolean(doc, "termsAccepted", false));
         u.setDeviceIdentifier(getString(doc, "deviceIdentifier"));
         u.setBlocked(getBoolean(doc, "isBlocked", false));
+        u.setAdmin(getBoolean(doc, "isAdmin", false));
         u.setCreatedAt(toInstant(doc.get("createdAt")));
         u.setUpdatedAt(toInstant(doc.get("updatedAt")));
         return u;
@@ -145,6 +208,7 @@ public class UserAccountRepository extends BaseFirebaseRepository {
         m.put("termsAccepted", u.isTermsAccepted());
         m.put("deviceIdentifier", u.getDeviceIdentifier());
         m.put("isBlocked", u.isBlocked());
+        m.put("isAdmin", u.isAdmin());
         m.put("createdAt", fromInstant(u.getCreatedAt()));
         m.put("updatedAt", fromInstant(u.getUpdatedAt()));
         return m;

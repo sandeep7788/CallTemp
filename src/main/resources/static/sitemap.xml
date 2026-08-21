@@ -35,6 +35,15 @@
   </url>
 
   <url>
+    <loc>https://makecall.in/faq</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://makecall.in/faq" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://makecall.in/faq" />
+  </url>
+
+  <url>
     <loc>https://makecall.in/privacy-policy</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>

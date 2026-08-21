@@ -55,11 +55,11 @@
       <label class="sr-only" for="phone-number">Phone number or client name</label>
       <div class="number-entry">
         <input id="phone-number" type="tel" inputmode="none" autocomplete="off"
-               placeholder="Enter phone number…" 
-               aria-label="Phone number input - Paste or dial a number to call" 
-               pattern="[0-9+\-\s()]+" 
+               placeholder="Enter phone number…"
+               aria-label="Phone number input - Paste or dial a number to call"
+               pattern="[0-9+\-\s()]+"
                title="Enter a valid phone number (10+ digits)" />
-        <button type="button" class="icon-button backspace-btn" id="button-clear" 
+        <button type="button" class="icon-button backspace-btn" id="button-clear"
                 aria-label="Delete last digit (Hold to clear all)"
                 title="Tap: Delete last digit | Hold: Clear number">
           <!-- Backspace / delete symbol -->
@@ -163,6 +163,10 @@
 
     <!-- ② STATUS / WALLET CARD – second on mobile -->
     <section id="info" class="card status-card" aria-labelledby="app-title">
+      <div class="booth-hero">
+        <img class="booth-hero-img" src="/images/phone-booth-yellow.svg"
+             alt="Illustration of a classic yellow landline telephone booth" width="112" height="205" loading="lazy">
+      </div>
       <div class="brand-row">
         <div>
           <p class="eyebrow">Internet Calling Platform</p>
@@ -173,7 +177,7 @@
 
       <!-- GUEST STATE: login prompt (hidden once signed in) -->
       <div class="guest-only auth-guest-panel">
-        <p class="auth-hint">Sign in to start online calling. Call mobile and landline numbers from browser. New users receive get Up To ₹10.00 welcome credit.</p>
+        <p class="auth-hint">Sign in to start online calling. Call mobile and landline numbers across India from your browser. New users receive get Up To ₹6.00 welcome credit.</p>
         <button type="button" id="btn-login" class="google-signin-button" style="margin-top:0.85rem;">
           
           <b>Simple Sign in</b>
@@ -190,7 +194,7 @@
           </div>
           <div>
             <span class="wallet-label">Rate</span>
-            <strong id="wallet-rate">₹10/min</strong>
+            <strong id="wallet-rate">₹6/min</strong>
           </div>
           <button type="button" id="button-topup" class="secondary-action">Add money</button>
           <button type="button" id="button-logout" class="secondary-action logout-action">Logout</button>
@@ -265,7 +269,7 @@
     <div class="modal-card auth-modal-card">
       <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>
       <h2 id="simple-login-title">Sign in to call</h2>
-      <p>Enter your mobile number to start calling. New users receive a get Up To ₹10.00 welcome credit.</p>
+      <p>Enter your mobile number to start calling. New users receive a get Up To ₹6.00 welcome credit.</p>
       <form id="simple-login-form" class="login-form" style="margin-top:1.25rem;" novalidate>
         <label for="simple-login-number">Mobile number <span class="required-star">*</span></label>
         <input id="simple-login-number" type="tel" inputmode="tel" autocomplete="tel"
@@ -286,7 +290,7 @@
     <div class="modal-card auth-modal-card">
       <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>
       <h2 id="auth-title">Sign in to call</h2>
-      <p>Sign in with your Google account to make calls. You'll receive a get Up To ₹10.00 welcome credit on first sign-in.</p>
+      <p>Sign in with your Google account to make calls. You'll receive a get Up To ₹6.00 welcome credit on first sign-in.</p>
       <div class="modal-actions single-action" style="margin-top:1.5rem;">
         <button type="button" id="btn-google-signin" class="google-signin-button">
           <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
@@ -313,9 +317,9 @@
       <p>We need your mobile number to set up your MakeCall account.</p>
 
       <form id="profile-form" class="login-form" style="margin-top:1rem;" novalidate>
-        <label for="profile-phone">Mobile number <span class="required-star">*</span></label>
-        <input id="profile-phone" type="tel" inputmode="tel" autocomplete="tel"
-               placeholder="+91 98765 43210" required />
+        <label for="profile-name">Your Name <span class="required-star">*</span></label>
+        <input id="profile-name" type="text" autocomplete="name"
+               placeholder="Enter your name" required />
 
         <input id="profile-location" type="hidden" />
 
@@ -336,7 +340,7 @@
     <div class="modal-card">
       <h2 id="terms-title">Terms and Conditions</h2>
       <p>This service must not be used for illegal, fraudulent, abusive, or harmful purposes.</p>
-      <p>You need at least <strong>₹1.00</strong> in your wallet before placing a call. Calls are charged at ₹10 per minute, calculated per second from the moment the call starts ringing.</p>
+      <p>You need at least <strong>₹1.00</strong> in your wallet before placing a call. Calls are charged at ₹6 per minute, calculated per second from the moment the call starts ringing.</p>
       <p>Users are responsible for all calls made from their account. Do <strong>not</strong> use this service for emergency calls (112 / 911).</p>
       <p>You must provide accurate personal information. Misuse may result in account suspension or permanent blocking.</p>
       <p>Read the full <a href="/terms" target="_blank" rel="noopener" class="link-button">Terms &amp; Conditions</a>.</p>

@@ -21,6 +21,7 @@ public class UserAccount {
     private boolean termsAccepted;
     private String deviceIdentifier;
     private boolean isBlocked = false;
+    private boolean isAdmin = false;
     private Instant createdAt;
     private Instant updatedAt;
 
@@ -131,6 +132,14 @@ public class UserAccount {
 
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     public Instant getCreatedAt() {

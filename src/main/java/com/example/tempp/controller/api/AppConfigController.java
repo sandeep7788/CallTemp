@@ -356,7 +356,7 @@ public class AppConfigController {
      * {
      *   "registration_reward":        3.0,
      *   "minimum_balance":            1.0,
-     *   "call_rate_per_minute":       10.0,
+     *   "call_rate_per_minute":       6.0,
      *   "minimum_call_charge":        0.01,
      *   "max_concurrent_calls":       10,
      *   "outbound_twiml_ttl_minutes": 15

@@ -1,0 +1,415 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   MakeCall Admin Panel — mobile-first, funky.
+   Built on top of the shared site.css design tokens (--primary, --text-soft,
+   --muted, --success*, --danger*, --card-border, --radius, --shadow, --divider).
+   Load this file AFTER site.css. Layout is mobile-first: base rules target
+   phones, and larger layouts are added inside min-width media queries.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Extra "funky" accent colors, additive to site.css tokens */
+  --funky-pink:    #DB2777;
+  --funky-purple:  #7C3AED;
+  --funky-teal:    #0D9488;
+  --funky-amber:   #F59E0B;
+  --funky-emerald: #059669;
+  --funky-rose:    #E11D48;
+  --funky-indigo:  #4F46E5;
+}
+
+/* ─── Shell ──────────────────────────────────────────────────────────────── */
+.admin-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: .75rem .75rem 6.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* ─── Top bar ────────────────────────────────────────────────────────────── */
+.admin-badge {
+  display: inline-block;
+  margin-left: .35rem;
+  padding: .1rem .4rem;
+  border-radius: 999px;
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: #fff;
+  background: linear-gradient(135deg, var(--funky-pink), var(--funky-purple));
+  vertical-align: .1em;
+}
+.admin-brand-mark {
+  background: linear-gradient(135deg, var(--funky-purple) 0%, var(--pal-blue) 60%, var(--funky-teal) 100%) !important;
+  transform: rotate(-6deg);
+}
+#admin-greeting { display: block; }
+
+/* Desktop nav row = horizontal pills (mirrors site.css nav-links, plus icons) */
+.admin-nav-links { gap: .35rem; }
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  cursor: pointer;
+}
+.admin-nav-link .tab-icon { font-size: 1.05rem; line-height: 1; }
+.admin-nav-link .tab-label { font-size: .85rem; }
+.admin-nav-link.admin-nav-exit { color: var(--funky-rose); }
+
+/* ─── Section switching (single-page tabs, no page reload) ─────────────────── */
+.admin-section { display: none; }
+.admin-section.is-active { display: flex; flex-direction: column; gap: 1rem; animation: admin-fade-in .3s ease both; }
+
+/* ─── Refresh FAB ────────────────────────────────────────────────────────── */
+.fab-refresh {
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 1.2rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--pal-blue), var(--funky-purple));
+  box-shadow: var(--shadow-blue);
+  cursor: pointer;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.fab-refresh:hover { transform: translateY(-2px) rotate(20deg); }
+.fab-refresh:active,
+.fab-refresh.is-spinning { animation: admin-spin .6s ease; }
+
+/* ─── Stat grid (dashboard) — mobile-first single column ───────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .8rem;
+}
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.6);
+  box-shadow: var(--shadow);
+  animation: admin-pop .45s cubic-bezier(.22,1,.36,1) both;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.stat-card:active { transform: scale(.97); }
+.stat-grid .stat-card:nth-child(1) { animation-delay: .02s; }
+.stat-grid .stat-card:nth-child(2) { animation-delay: .06s; }
+.stat-grid .stat-card:nth-child(3) { animation-delay: .10s; }
+.stat-grid .stat-card:nth-child(4) { animation-delay: .14s; }
+.stat-grid .stat-card:nth-child(5) { animation-delay: .18s; }
+.stat-grid .stat-card:nth-child(6) { animation-delay: .22s; }
+.stat-grid .stat-card:nth-child(7) { animation-delay: .26s; }
+.stat-grid .stat-card:nth-child(8) { animation-delay: .30s; }
+
+.stat-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  background: rgba(255,255,255,.55);
+  box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.7);
+}
+.stat-label {
+  display: block;
+  color: rgba(15,23,42,.62);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.stat-value {
+  display: block;
+  font-size: clamp(1.35rem, 5vw, 1.7rem);
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.stat-card-blue    { background: linear-gradient(135deg, #dbeafe, #eff6ff); }
+.stat-card-green   { background: linear-gradient(135deg, #d1fae5, #ecfdf5); }
+.stat-card-red     { background: linear-gradient(135deg, #fee2e2, #fef2f2); }
+.stat-card-purple  { background: linear-gradient(135deg, #ede9fe, #f5f3ff); }
+.stat-card-amber   { background: linear-gradient(135deg, #fef3c7, #fffbeb); }
+.stat-card-teal    { background: linear-gradient(135deg, #ccfbf1, #f0fdfa); }
+.stat-card-emerald { background: linear-gradient(135deg, #d1fae5, #f0fdf4); }
+.stat-card-rose    { background: linear-gradient(135deg, #ffe4e6, #fff1f2); }
+
+/* ─── Filter bar ─────────────────────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem;
+}
+.filter-bar input,
+.filter-bar select {
+  flex: 1 1 100%;
+  min-width: 0;
+  padding: .7rem .9rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--divider);
+  background: #fff;
+  color: var(--text-soft);
+  font-size: .92rem;
+}
+.filter-bar input:focus,
+.filter-bar select:focus {
+  outline: none;
+  border-color: var(--funky-purple);
+  box-shadow: 0 0 0 3px rgba(124,58,237,.15);
+}
+.filter-bar .primary-action {
+  flex: 1 1 100%;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  background: linear-gradient(135deg, var(--pal-blue), var(--funky-purple));
+}
+
+/* ─── Loading / error / empty states ────────────────────────────────────── */
+.admin-loading,
+.admin-error {
+  border-radius: var(--radius-sm);
+  padding: 1.1rem 1.25rem;
+  font-size: .9rem;
+}
+.admin-loading {
+  color: var(--muted);
+  background: linear-gradient(135deg,#f8faff,#eff4ff);
+  border: 1px dashed rgba(124,58,237,.25);
+}
+.admin-error {
+  color: var(--danger-dark);
+  background: var(--danger-light);
+  border: 1px solid rgba(220,38,38,.25);
+}
+
+/* ─── Avatar (colored initial circle) ───────────────────────────────────── */
+.name-cell { display: flex; align-items: center; gap: .6rem; }
+.avatar-badge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  font-size: .82rem;
+  letter-spacing: -.02em;
+}
+.avatar-0 { background: linear-gradient(135deg, var(--pal-blue), var(--primary-dark)); }
+.avatar-1 { background: linear-gradient(135deg, var(--funky-pink), var(--funky-rose)); }
+.avatar-2 { background: linear-gradient(135deg, var(--funky-teal), var(--success-dark)); }
+.avatar-3 { background: linear-gradient(135deg, var(--funky-amber), var(--warning-dark)); }
+.avatar-4 { background: linear-gradient(135deg, var(--funky-purple), var(--funky-indigo)); }
+.avatar-5 { background: linear-gradient(135deg, var(--funky-emerald), var(--success-dark)); }
+
+/* ─── Table (desktop) / Card list (mobile) ──────────────────────────────── */
+.table-wrap {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  background: var(--card-glass);
+  box-shadow: var(--shadow);
+}
+.admin-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.admin-table th { display: none; } /* header hidden on mobile card view */
+.admin-table, .admin-table tbody, .admin-table tr { display: block; width: 100%; }
+.admin-table tr {
+  display: block;
+  padding: .9rem 1rem;
+  border-bottom: 1px solid var(--divider);
+}
+.admin-table tbody tr:last-child { border-bottom: none; }
+.admin-table tbody tr:hover { background: rgba(124,58,237,.06); }
+.admin-table td {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+  padding: .35rem 0;
+  text-align: right;
+  color: var(--text-soft);
+  white-space: normal;
+}
+.admin-table td::before {
+  content: attr(data-label);
+  flex: 0 0 auto;
+  text-align: left;
+  margin-right: auto;
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.admin-table td.cell-actions { justify-content: flex-start; flex-wrap: wrap; }
+.admin-table td.cell-actions::before { display: none; }
+.admin-table td.cell-name { justify-content: flex-start; }
+.admin-table td.cell-name::before { display: none; }
+
+/* ─── Compact row-action buttons (deliberately not reusing .primary-action /
+   .secondary-action / .danger-action, since .danger-action defaults to
+   display:none in site.css for the in-call hangup button) ───────────────── */
+.row-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .45rem .8rem;
+  border-radius: 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  border: 1.5px solid var(--divider);
+  background: #fff;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all .15s ease;
+  margin: 0 .3rem .3rem 0;
+}
+.row-action-btn:active { transform: scale(.95); }
+.row-action-btn:hover { background: rgba(124,58,237,.08); border-color: rgba(124,58,237,.30); color: var(--funky-purple); }
+.row-action-btn.row-action-danger { color: var(--danger); border-color: rgba(220,38,38,.25); }
+.row-action-btn.row-action-danger:hover { background: var(--danger-light); border-color: rgba(220,38,38,.40); }
+.row-action-btn.row-action-success { color: var(--success); border-color: rgba(22,163,74,.25); }
+.row-action-btn.row-action-success:hover { background: var(--success-light); border-color: rgba(22,163,74,.40); }
+
+/* Confirm modal reuses .danger-action but must override site.css's default
+   display:none (that rule targets only the in-call hangup button). */
+#confirm-modal .danger-action { display: inline-flex; align-items: center; justify-content: center; }
+
+/* ─── User detail modal body ─────────────────────────────────────────────── */
+.admin-modal-card { max-width: 560px; text-align: left; }
+.user-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: .75rem;
+  margin-top: .75rem;
+}
+.user-detail-grid div { font-size: .85rem; color: var(--muted); }
+.user-detail-grid strong { display: block; color: var(--text-soft); font-size: .95rem; margin-top: .15rem; }
+.user-detail-subheading {
+  margin-top: 1.1rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.user-detail-list { margin-top: .5rem; max-height: 220px; overflow-y: auto; }
+.user-detail-list-item {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .5rem 0;
+  border-bottom: 1px solid var(--divider);
+  font-size: .82rem;
+  color: var(--text-soft);
+}
+.user-detail-list-item:last-child { border-bottom: none; }
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes admin-pop {
+  0%   { opacity: 0; transform: translateY(10px) scale(.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes admin-fade-in {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes admin-spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Mobile bottom tab bar (app-style) — only below the tablet breakpoint.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  .admin-topbar { flex-wrap: wrap; }
+  .admin-nav-links {
+    position: fixed;
+    left: .6rem;
+    right: .6rem;
+    bottom: calc(.6rem + env(safe-area-inset-bottom));
+    z-index: 60;
+    justify-content: space-around;
+    gap: 0;
+    padding: .4rem .3rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--card-border);
+  }
+  .admin-nav-link {
+    flex-direction: column;
+    gap: .1rem;
+    padding: .4rem .5rem;
+    border-radius: 999px;
+    min-width: 3rem;
+  }
+  .admin-nav-link .tab-label { font-size: .6rem; font-weight: 800; }
+  .admin-nav-link .tab-icon { font-size: 1.25rem; }
+  .admin-nav-link.is-active {
+    background: linear-gradient(135deg, var(--pal-blue), var(--funky-purple));
+    color: #fff !important;
+    transform: translateY(-3px);
+  }
+  .admin-nav-link.admin-nav-exit { color: var(--funky-rose); }
+
+  .admin-shell { padding-bottom: 6rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tablet and up — multi-column stats, real tables.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 560px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .filter-bar input,
+  .filter-bar select { flex: 1 1 200px; }
+  .filter-bar .primary-action { flex: 0 0 auto; }
+}
+
+@media (min-width: 768px) {
+  .admin-shell { padding: 1.25rem 1.5rem; }
+  .stat-grid { grid-template-columns: repeat(4, 1fr); }
+
+  .admin-table { min-width: 640px; }
+  .admin-table th {
+    display: table-cell;
+    padding: .8rem 1rem;
+    text-align: left;
+    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    border-bottom: 1.5px solid var(--divider);
+    background: linear-gradient(135deg, rgba(124,58,237,.06), rgba(0,121,193,.06));
+  }
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: revert; width: auto; }
+  .table-wrap { overflow-x: auto; }
+  .admin-table tr { border-bottom: 1px solid var(--divider); padding: 0; }
+  .admin-table td {
+    display: table-cell;
+    padding: .8rem 1rem;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .admin-table td::before { content: none; }
+  .admin-table td.cell-wrap,
+  .admin-table td.cell-actions { white-space: normal; word-break: break-word; }
+}

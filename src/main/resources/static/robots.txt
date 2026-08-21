@@ -6,6 +6,7 @@ Allow: /
 Allow: /about
 Allow: /pricing
 Allow: /contact
+Allow: /faq
 Allow: /privacy-policy
 Allow: /terms
 Allow: /terms-and-conditions
@@ -25,7 +26,7 @@ Allow: /manifest.json
 Disallow: /user/
 Disallow: /call/
 Disallow: /api/
-Disallow: /admin/
+Disallow: /admin
 Disallow: /actuator/
 
 # Block query parameters that don't create unique content
@@ -38,8 +39,12 @@ Sitemap: https://makecall.in/sitemap.xml
 Crawl-delay: 1
 
 # Special instructions for specific bots
+# Note: a crawler matching one of these named groups uses ONLY this group's rules
+# (not the User-agent: * rules above), so the private-endpoint Disallow rules are
+# repeated here for /admin specifically.
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
 Crawl-delay: 0
 
 User-agent: Googlebot-Image
@@ -49,9 +54,11 @@ Allow: /*.png
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin
 Crawl-delay: 1
 
 User-agent: Slurp
 Allow: /
+Disallow: /admin
 Crawl-delay: 2
 

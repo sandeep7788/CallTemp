@@ -382,7 +382,7 @@ Secure internet calling platform with web dialer, browser calling and cloud tele
 
 ### Pricing Page
 - **H1**: "Affordable Internet Calling to Mobile & Landline"
-- **H2**: "₹10.00 per minute"
+- **H2**: "₹6.00 per minute"
 - Clear value proposition
 - Billing examples
 

@@ -39,3 +39,14 @@ ssh -6 -i mainvm.pem ec2-user@2406:da1a:3.235.248.57
   *
   *
 * */
+
+/*What needs to be created
+In the Firebase console → Firestore → Indexes → Composite tab, add a collection-group index (not collection-scoped) on wallet_transactions:
+
+Fields: type (Ascending) + createdAt (Descending) — covers filtered+sorted transaction lists
+Fields: createdAt (Descending) alone, collection-group scoped — covers the unfiltered case
+(If /admin/api/users?status=blocked|active also 500s, you'll additionally need a composite index on users: isBlocked + createdAt.)
+
+The fastest way to get the exact index definition is to trigger the error once and check your app logs for the FAILED_PRECONDITION message — it contains a one-click "create this index" link.
+
+Want me to also add log.error(...) in those repository catch blocks (currently the real Firestore exception is swallowed from logs, not just the response) and check in a firestore.indexes.json so these indexes are defined as code for future deploys?*/

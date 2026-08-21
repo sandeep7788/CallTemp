@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin Panel &ndash; MakeCall</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link href="/css/site.css" rel="stylesheet">
+  <link href="/css/admin.css" rel="stylesheet">
+</head>
+<body>
+  <div th:replace="~{fragments/site :: background}"></div>
+  <header th:replace="~{fragments/admin :: adminNav()}"></header>
+
+  <main class="admin-shell" id="admin-main">
+
+    <!-- Dashboard Section -->
+    <section id="admin-section-dashboard" class="admin-section is-active">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Overview</p>
+          <h1>Dashboard <span aria-hidden="true">&#10024;</span></h1>
+        </div>
+        <button type="button" id="btn-refresh-dashboard" class="fab-refresh" aria-label="Refresh dashboard" title="Refresh">&#128260;</button>
+      </div>
+
+      <div id="dashboard-loading" class="admin-loading">Loading dashboard&hellip;</div>
+      <div id="dashboard-error" class="admin-error" style="display:none;"></div>
+
+      <div id="dashboard-stats" class="stat-grid" style="display:none;">
+        <div class="stat-card stat-card-blue">
+          <span class="stat-icon" aria-hidden="true">&#128101;</span>
+          <span class="stat-label">Total Users</span>
+          <strong class="stat-value" id="stat-total-users">0</strong>
+        </div>
+        <div class="stat-card stat-card-green">
+          <span class="stat-icon" aria-hidden="true">&#9989;</span>
+          <span class="stat-label">Active Users</span>
+          <strong class="stat-value" id="stat-active-users">0</strong>
+        </div>
+        <div class="stat-card stat-card-red">
+          <span class="stat-icon" aria-hidden="true">&#128683;</span>
+          <span class="stat-label">Blocked Users</span>
+          <strong class="stat-value" id="stat-blocked-users">0</strong>
+        </div>
+        <div class="stat-card stat-card-purple">
+          <span class="stat-icon" aria-hidden="true">&#128188;</span>
+          <span class="stat-label">Wallets</span>
+          <strong class="stat-value" id="stat-wallet-count">0</strong>
+        </div>
+        <div class="stat-card stat-card-amber">
+          <span class="stat-icon" aria-hidden="true">&#128176;</span>
+          <span class="stat-label">Total Wallet Balance</span>
+          <strong class="stat-value" id="stat-wallet-balance">&#8377;0.00</strong>
+        </div>
+        <div class="stat-card stat-card-teal">
+          <span class="stat-icon" aria-hidden="true">&#128257;</span>
+          <span class="stat-label">Total Transactions</span>
+          <strong class="stat-value" id="stat-total-transactions">0</strong>
+        </div>
+        <div class="stat-card stat-card-emerald">
+          <span class="stat-icon" aria-hidden="true">&#11014;&#65039;</span>
+          <span class="stat-label">Credit Transactions</span>
+          <strong class="stat-value" id="stat-credit-transactions">0</strong>
+        </div>
+        <div class="stat-card stat-card-rose">
+          <span class="stat-icon" aria-hidden="true">&#11015;&#65039;</span>
+          <span class="stat-label">Debit Transactions</span>
+          <strong class="stat-value" id="stat-debit-transactions">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Users Section -->
+    <section id="admin-section-users" class="admin-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">User Management</p>
+          <h1>Users <span aria-hidden="true">&#128101;</span></h1>
+        </div>
+      </div>
+
+      <div class="card filter-bar">
+        <input type="search" id="user-search" placeholder="Search by name, number, email or ID&hellip;" aria-label="Search users">
+        <select id="user-status-filter" aria-label="Filter by status">
+          <option value="all">All statuses</option>
+          <option value="active">Active</option>
+          <option value="blocked">Blocked</option>
+        </select>
+        <button type="button" id="btn-apply-user-filter" class="primary-action">Apply</button>
+      </div>
+
+      <div id="users-loading" class="admin-loading">Loading users&hellip;</div>
+      <div id="users-error" class="admin-error" style="display:none;"></div>
+      <div id="users-empty" class="empty-state" style="display:none;">No users found.</div>
+
+      <div class="table-wrap" id="users-table-wrap" style="display:none;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Number</th>
+              <th>Email</th>
+              <th>Wallet</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Wallets Section -->
+    <section id="admin-section-wallets" class="admin-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Wallet Management</p>
+          <h1>Wallets <span aria-hidden="true">&#128176;</span></h1>
+        </div>
+      </div>
+
+      <div class="card filter-bar">
+        <input type="search" id="wallet-search" placeholder="Search by name, number, email or ID&hellip;" aria-label="Search wallets">
+        <button type="button" id="btn-apply-wallet-filter" class="primary-action">Apply</button>
+      </div>
+
+      <div id="wallets-loading" class="admin-loading">Loading wallets&hellip;</div>
+      <div id="wallets-error" class="admin-error" style="display:none;"></div>
+      <div id="wallets-empty" class="empty-state" style="display:none;">No wallets found.</div>
+
+      <div class="table-wrap" id="wallets-table-wrap" style="display:none;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Number</th>
+              <th>Wallet Balance</th>
+              <th>Welcome Reward</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="wallets-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Transactions Section -->
+    <section id="admin-section-transactions" class="admin-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Transaction Management</p>
+          <h1>Transactions <span aria-hidden="true">&#128257;</span></h1>
+        </div>
+      </div>
+
+      <div class="card filter-bar filter-bar-wrap">
+        <input type="text" id="tx-user-id" placeholder="User ID (optional)" aria-label="Filter by user ID">
+        <select id="tx-type-filter" aria-label="Filter by type">
+          <option value="">All types</option>
+          <option value="CREDIT">Credit</option>
+          <option value="DEBIT">Debit</option>
+        </select>
+        <input type="date" id="tx-from" aria-label="From date">
+        <input type="date" id="tx-to" aria-label="To date">
+        <button type="button" id="btn-apply-tx-filter" class="primary-action">Apply</button>
+      </div>
+
+      <div id="tx-loading" class="admin-loading">Loading transactions&hellip;</div>
+      <div id="tx-error" class="admin-error" style="display:none;"></div>
+      <div id="tx-empty" class="empty-state" style="display:none;">No transactions found.</div>
+
+      <div class="table-wrap" id="tx-table-wrap" style="display:none;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>User ID</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Balance After</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody id="tx-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- User Detail Modal -->
+  <div id="user-detail-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="user-detail-title">
+    <div class="modal-card admin-modal-card">
+      <p class="eyebrow" style="margin-bottom:0.5rem;">User Details</p>
+      <h2 id="user-detail-title">User</h2>
+      <div id="user-detail-body"></div>
+      <div class="modal-actions single-action" style="margin-top:1.2rem;">
+        <button type="button" id="btn-close-user-detail" class="secondary-action">Close</button>
+      </div>
+      <button type="button" id="btn-close-user-detail-x" class="modal-close-btn" aria-label="Close">&times;</button>
+    </div>
+  </div>
+
+  <!-- Block/Unblock Confirmation Modal -->
+  <div id="confirm-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="modal-card">
+      <h2 id="confirm-title">Confirm action</h2>
+      <p id="confirm-message"></p>
+      <div class="modal-actions">
+        <button type="button" id="btn-confirm-yes" class="danger-action">Confirm</button>
+        <button type="button" id="btn-confirm-cancel" class="secondary-action">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toast-container" class="toast-container" aria-live="assertive" aria-atomic="false"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

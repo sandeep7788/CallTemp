@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseToken;
 import com.twilio.jwt.accesstoken.AccessToken;
 import com.twilio.jwt.accesstoken.VoiceGrant;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public class UserService {
      */
     public static final double MINIMUM_WALLET_BALANCE = 1.0;
     /**
-     * ₹10 per minute call rate.
+     * ₹6 per minute call rate.
      */
-    public static final double CALL_RATE_PER_MINUTE = 10.0;
+    public static final double CALL_RATE_PER_MINUTE = 6.0;
     /**
      * ₹3 welcome credit for every new registration.
      */
@@ -45,6 +46,16 @@ public class UserService {
     private final Firestore firestore;
     private final FirebaseApp firebaseApp;
 
+    /**
+     * Comma-separated phone numbers / emails that are auto-promoted to admin on their
+     * next login (idempotent one-time bootstrap – there is no admin signup flow).
+     * Configure via {@code app.admin.bootstrap-numbers} / {@code app.admin.bootstrap-emails}.
+     */
+    @Value("${app.admin.bootstrap-numbers:}")
+    private String adminBootstrapNumbers;
+
+    @Value("${app.admin.bootstrap-emails:}")
+    private String adminBootstrapEmails;
 
     public UserService(UserAccountRepository userAccountRepository, CallHistoryRepository callHistoryRepository, WalletTransactionRepository walletTransactionRepository, AppConfigService appConfigService, Firestore firestore, FirebaseApp firebaseApp) {
         this.userAccountRepository = userAccountRepository;
@@ -105,6 +116,7 @@ public class UserService {
             user.setWalletRewardCredited(true);
         }
 
+        applyAdminBootstrap(user);
         UserAccount saved = userAccountRepository.save(user);
 
         // Persist registration reward wallet transaction for new users
@@ -157,6 +169,9 @@ public class UserService {
                 user.setEmail(email);
                 dirty = true;
             }
+            if (applyAdminBootstrap(user)) {
+                dirty = true;
+            }
             if (dirty) {
                 user = userAccountRepository.save(user);
             }
@@ -174,6 +189,7 @@ public class UserService {
             if (deviceIdentifier != null && !deviceIdentifier.isBlank()) {
                 user.setDeviceIdentifier(deviceIdentifier);
             }
+            applyAdminBootstrap(user);
             user = userAccountRepository.save(user);
             recordRegistrationReward(user.getId());
             isNew = true;
@@ -206,6 +222,7 @@ public class UserService {
         user.setNumber(request.getPhoneNumber().trim());
         user.setLocation(resolveLocation(request.getLocation()));  // "x" when unavailable
         user.setTermsAccepted(true);
+        applyAdminBootstrap(user);
         UserAccount saved = userAccountRepository.save(user);
 
         log.info("Profile updated for user: {}", userId);
@@ -274,6 +291,54 @@ public class UserService {
             throw new IllegalStateException("Caller identity is required");
         }
         return userAccountRepository.findByTemp(identity.trim()).orElseThrow(() -> new IllegalStateException("Caller user was not found"));
+    }
+
+    // ─── Admin: block / unblock ──────────────────────────────────────────────
+
+    /**
+     * Sets the {@code isBlocked} flag on a user account. Used by the admin panel;
+     * relies on the same field already enforced by {@link BlockedUserException}
+     * checks throughout login and call flows.
+     */
+    public UserAccount setBlocked(String userId, boolean blocked) {
+        UserAccount user = userAccountRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
+        user.setBlocked(blocked);
+        UserAccount saved = userAccountRepository.save(user);
+        log.info("Admin set isBlocked={} for userId={}", blocked, userId);
+        return saved;
+    }
+
+    /**
+     * Promotes a user to admin when their number/email matches the configured
+     * bootstrap allow-list and they are not already an admin. Idempotent – safe
+     * to call on every login. Returns {@code true} if the account was changed
+     * (caller is responsible for persisting).
+     */
+    private boolean applyAdminBootstrap(UserAccount user) {
+        if (user == null || user.isAdmin()) {
+            return false;
+        }
+        if (matchesBootstrapList(user.getNumber(), adminBootstrapNumbers) || matchesBootstrapList(user.getEmail(), adminBootstrapEmails)) {
+            user.setAdmin(true);
+            log.info("Granting admin access via bootstrap allow-list – userId={}", user.getId());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean matchesBootstrapList(String value, String commaSeparatedList) {
+        if (value == null || value.isBlank() || commaSeparatedList == null || commaSeparatedList.isBlank()) {
+            return false;
+        }
+        String normalizedValue = value.trim().toLowerCase();
+        for (String candidate : commaSeparatedList.split(",")) {
+            String trimmed = candidate.trim().toLowerCase();
+            if (!trimmed.isEmpty() && trimmed.equals(normalizedValue)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // ─── Helpers ─────────────────────────────────────────────────────────────
@@ -409,6 +474,7 @@ public class UserService {
             user.setWalletRewardCredited(true);
         }
 
+        applyAdminBootstrap(user);
         UserAccount saved = userAccountRepository.save(user);
 
         if (isNewUser) {

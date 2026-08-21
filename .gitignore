@@ -1,1 +1,39 @@
-src/main/resources/firebase-service-account.json
+# Maven
+target/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# Spring Boot
+.springBeans
+.sts4-cache/
+
+# Logs
+*.log
+logs/
+
+# Environment / secrets
+.env
+.env.*
+application-local.properties
+application-local.yml
+application-local.yaml
+
+# OS
+.DS_Store
+Thumbs.db

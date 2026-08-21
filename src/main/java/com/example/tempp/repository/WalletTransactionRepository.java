@@ -64,6 +64,80 @@ public class WalletTransactionRepository extends BaseFirebaseRepository {
         }
     }
 
+    // ─── Admin listing & aggregates ────────────────────────────────────────────
+
+    /**
+     * Ledger entries for a single user (sub-collection query – no composite index needed).
+     */
+    public List<WalletTransaction> findAllByUserId(String userId, String type, Instant from, Instant to, int limit) {
+        try {
+            Query query = applyFilters(db.collection(USERS).document(userId).collection(TX_COLLECTION), type, from, to)
+                    .orderBy("createdAt", Query.Direction.DESCENDING).limit(limit);
+            QuerySnapshot qs = query.get().get();
+            List<WalletTransaction> result = new ArrayList<>();
+            for (DocumentSnapshot doc : qs.getDocuments()) {
+                result.add(fromDoc(doc, userId));
+            }
+            return result;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase findAllByUserId WalletTransaction failed", e);
+        }
+    }
+
+    /**
+     * Ledger entries across all users via a Firestore collection-group query on
+     * {@code wallet_transactions}. Filtering by type and/or date range together with
+     * {@code orderBy(createdAt)} may require a one-time Firestore composite index –
+     * Firestore surfaces a direct "create index" console link in the error if so.
+     */
+    public List<WalletTransaction> findAll(String type, Instant from, Instant to, int limit) {
+        try {
+            Query query = applyFilters(db.collectionGroup(TX_COLLECTION), type, from, to)
+                    .orderBy("createdAt", Query.Direction.DESCENDING).limit(limit);
+            QuerySnapshot qs = query.get().get();
+            List<WalletTransaction> result = new ArrayList<>();
+            for (DocumentSnapshot doc : qs.getDocuments()) {
+                result.add(fromDoc(doc, extractUserId(doc)));
+            }
+            return result;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase findAll WalletTransaction failed", e);
+        }
+    }
+
+    public long countAll(String type, Instant from, Instant to) {
+        try {
+            Query query = applyFilters(db.collectionGroup(TX_COLLECTION), type, from, to);
+            AggregateQuerySnapshot snap = query.count().get().get();
+            return snap.getCount();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase countAll WalletTransaction failed", e);
+        }
+    }
+
+    private Query applyFilters(Query query, String type, Instant from, Instant to) {
+        Query result = query;
+        if (type != null && !type.isBlank()) {
+            result = result.whereEqualTo("type", type.trim().toUpperCase());
+        }
+        if (from != null) {
+            result = result.whereGreaterThanOrEqualTo("createdAt", Date.from(from));
+        }
+        if (to != null) {
+            result = result.whereLessThanOrEqualTo("createdAt", Date.from(to));
+        }
+        return result;
+    }
+
+    /**
+     * Derives the owning user's document ID from a collection-group query result
+     * (path shape: {@code users/{userId}/wallet_transactions/{id}}).
+     */
+    private String extractUserId(DocumentSnapshot doc) {
+        DocumentReference parent = doc.getReference().getParent().getParent();
+        return parent != null ? parent.getId() : null;
+    }
+
     // ─── Mapping ─────────────────────────────────────────────────────────────
 
     private Map<String, Object> toMap(WalletTransaction t) {
