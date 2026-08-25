@@ -1221,7 +1221,7 @@ $(function () {
             console.error('Twilio Device Error:', error);
             log('Twilio.Device Error: ' + error.message);
             setDeviceStatus('Error', 'error');
-            showToast('Device error: ' + error.message, 'error');
+            // showToast('Device error: ' + error.message, 'error');
         });
 
         device.on('incoming', function (call) {

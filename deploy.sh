@@ -153,7 +153,9 @@ log "Region    : $REGION"
 success "Targets resolved"
 
 # ─── SSH helper ───────────────────────────────────────────────────────────────
-SSH_OPTS="-i $SSH_KEY -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes"
+#SSH_OPTS="-i $SSH_KEY -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes"
+#remote() { ssh $SSH_OPTS "$SSH_USER@$EC2_HOST" "$@"; }
+SSH_OPTS="-4 -i $SSH_KEY -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes"
 remote() { ssh $SSH_OPTS "$SSH_USER@$EC2_HOST" "$@"; }
 
 # ─── Step 1: Build (optional) ─────────────────────────────────────────────────
@@ -199,8 +201,8 @@ fi
 step "Connecting to EC2 ($EC2_HOST)"
 
 if ! $DRY_RUN; then
-  ssh $SSH_OPTS "$SSH_USER@$EC2_HOST" "echo 'SSH OK'" >/dev/null 2>&1 \
-    || die "Cannot SSH to $EC2_HOST. Check the host IP, key, and security group."
+ssh $SSH_OPTS "$SSH_USER@$EC2_HOST" "echo 'SSH OK'" >/dev/null 2>&1 \
+  || die "Cannot SSH to $EC2_HOST. Check the host IP, key, and security group."
 fi
 success "SSH connection OK"
 
@@ -211,7 +213,7 @@ if $DRY_RUN; then
   log "[dry-run] Would run remote deployment script on $EC2_HOST"
 else
 
-DEPLOY_SCRIPT=$(cat <<REMOTE_SCRIPT
+DEPLOY_SCRIPT=$(cat <<'REMOTE_SCRIPT'
 #!/bin/bash
 set -euo pipefail
 
@@ -264,13 +266,20 @@ timeout 60 aws s3 cp "$S3_URI" "$REMOTE_JAR" \
   --endpoint-url "https://s3.dualstack.${REGION}.amazonaws.com" \
   --only-show-errors
 
-DOWNLOAD_EXIT=$?
+log "Starting JAR download..."
 
-log "S3 download command exit code: $DOWNLOAD_EXIT"
+if ! timeout 60 aws s3 cp "$S3_URI" "$REMOTE_JAR" \
+    --region "$REGION" \
+    --endpoint-url "https://s3.dualstack.${REGION}.amazonaws.com" \
+    --only-show-errors; then
 
-if [ $DOWNLOAD_EXIT -ne 0 ]; then
-    die "S3 download failed with exit code $DOWNLOAD_EXIT"
+    echo "[ERROR] S3 download failed."
+    echo "[ERROR] S3 URI: $S3_URI"
+    echo "[ERROR] Target: $REMOTE_JAR"
+    exit 1
 fi
+
+echo "[OK] S3 download completed."
 
 log "Checking downloaded JAR..."
 
