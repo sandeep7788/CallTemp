@@ -1,6 +1,8 @@
 package com.example.tempp.model;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Plain domain object representing a registered user.
@@ -20,6 +22,7 @@ public class UserAccount {
     private boolean walletRewardCredited = false; // idempotency guard for ₹3 sign-up reward
     private boolean termsAccepted;
     private String deviceIdentifier;
+    private List<String> deviceIdentifiers = new ArrayList<>();
     private boolean isBlocked = false;
     private boolean isAdmin = false;
     private Instant createdAt;
@@ -124,6 +127,14 @@ public class UserAccount {
 
     public void setDeviceIdentifier(String deviceIdentifier) {
         this.deviceIdentifier = deviceIdentifier;
+    }
+
+    public List<String> getDeviceIdentifiers() {
+        return deviceIdentifiers;
+    }
+
+    public void setDeviceIdentifiers(List<String> deviceIdentifiers) {
+        this.deviceIdentifiers = deviceIdentifiers;
     }
 
     public boolean isBlocked() {

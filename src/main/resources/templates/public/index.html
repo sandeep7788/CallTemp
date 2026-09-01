@@ -290,13 +290,19 @@
 <div id="simple-login-modal" class="modal-backdrop" role="dialog" aria-modal="true"
      aria-labelledby="simple-login-title">
     <div class="modal-card auth-modal-card">
-        <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>
+<!--        <p class="eyebrow" style="margin-bottom:0.5rem;">MakeCall</p>-->
         <h2 id="simple-login-title">Sign in to call</h2>
-        <p>Enter your mobile number to start calling. New users receive a get Up To ₹6.00 welcome credit.</p>
+        <p><strong>We don’t store any of your personal information.</strong> Please use a <strong>unique and private username</strong> to log in.</p>
+        <p><strong>हम आपकी कोई भी व्यक्तिगत जानकारी सेव नहीं करते।</strong> लॉगिन के लिए <strong>यूनिक और निजी यूज़रनेम</strong> का उपयोग करें।</p>
+
         <form id="simple-login-form" class="login-form" style="margin-top:1.25rem;" novalidate>
-            <label for="simple-login-number">Mobile number <span class="required-star">*</span></label>
-            <input id="simple-login-number" type="tel" inputmode="tel" autocomplete="tel"
-                   placeholder="+91 98765 43210" required/>
+            <label for="simple-login-number">
+                <strong>Username (with DOB or digits)</strong> 🟡
+                <span class="required-star">*</span>
+            </label>
+
+            <input id="simple-login-number" type="text" inputmode="text" autocomplete="username"
+                   placeholder="Mohan0601" required/>
             <!-- Hidden field populated by geolocation; "x" is sent when unavailable -->
             <input id="simple-login-location" type="hidden" value=""/>
             <button type="submit" id="btn-simple-login-submit" class="primary-action" style="margin-top:0.25rem;">

@@ -143,6 +143,7 @@
         '<td class="cell-wrap cell-name" data-label="Name"><span class="name-cell">' + avatarBadge(u.name, u.id) + '<span>' + escapeHtml(u.name || '—') + '</span></span></td>' +
         '<td data-label="Number">' + escapeHtml(u.number || '—') + '</td>' +
         '<td class="cell-wrap" data-label="Email">' + escapeHtml(u.email || '—') + '</td>' +
+        '<td data-label="Devices">' + escapeHtml((u.deviceIdentifiers && u.deviceIdentifiers.length) ? u.deviceIdentifiers.join(', ') : (u.deviceIdentifier || '—')) + '</td>' +
         '<td data-label="Wallet">' + formatCurrency(u.walletBalance) + '</td>' +
         '<td data-label="Status">' + statusBadge + '</td>' +
         '<td data-label="Joined">' + formatDate(u.createdAt) + '</td>' +
@@ -240,6 +241,7 @@
         '<div>Status<strong>' + (u.blocked ? 'Blocked' : 'Active') + '</strong></div>' +
         '<div>Joined<strong>' + formatDate(u.createdAt) + '</strong></div>' +
         '<div>User ID<strong>' + escapeHtml(u.id) + '</strong></div>' +
+        '<div>Devices<strong>' + escapeHtml((u.deviceIdentifiers && u.deviceIdentifiers.length ? u.deviceIdentifiers.join(', ') : (u.deviceIdentifier || '—'))) + '</strong></div>' +
       '</div>' +
       '<p class="user-detail-subheading">Recent Wallet Transactions</p>' +
       '<div class="user-detail-list">' + transactionsHtml + '</div>' +

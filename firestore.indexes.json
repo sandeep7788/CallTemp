@@ -9,11 +9,19 @@
       ]
     },
     {
-      "collectionGroup": "users",
+      "collectionId": "users",
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "isBlocked", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionId": "payment_records",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "paidAt", "order": "DESCENDING" }
       ]
     }
   ],

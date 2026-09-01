@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,7 @@ public class AdminService {
     private final UserAccountRepository userAccountRepository;
     private final WalletTransactionRepository walletTransactionRepository;
     private final CallHistoryRepository callHistoryRepository;
+    private final com.example.tempp.repository.PaymentRecordRepository paymentRecordRepository;
     private final UserService userService;
 
     // ─── Users ───────────────────────────────────────────────────────────────
@@ -128,6 +132,16 @@ public class AdminService {
         long creditTransactions = walletTransactionRepository.countAll("CREDIT", null, null);
         long debitTransactions = walletTransactionRepository.countAll("DEBIT", null, null);
 
+        // Revenue aggregates (total, this month, this week)
+        double totalRevenue = 0.0;
+        double revenueThisMonth = 0.0;
+        double revenueThisWeek = 0.0;
+        try {
+            // total revenue (all paid records)
+            totalRevenue = userAccountRepository == null ? 0.0 : 0.0; // placeholder, replaced below if PaymentRecordRepository available
+        } catch (Exception ignored) {
+        }
+
         Map<String, Object> stats = new HashMap<>();
         stats.put("totalUsers", totalUsers);
         stats.put("activeUsers", activeUsers);
@@ -137,6 +151,23 @@ public class AdminService {
         stats.put("totalTransactions", totalTransactions);
         stats.put("creditTransactions", creditTransactions);
         stats.put("debitTransactions", debitTransactions);
+
+        // Try to compute revenue using PaymentRecordRepository if present on classpath via bean wiring
+        try {
+            // resolve time ranges in UTC
+            ZonedDateTime nowUtc = ZonedDateTime.now(ZoneOffset.UTC);
+            ZonedDateTime startOfMonth = nowUtc.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
+            ZonedDateTime startOfWeek = nowUtc.minusDays(nowUtc.getDayOfWeek().getValue() - 1).truncatedTo(ChronoUnit.DAYS);
+            totalRevenue = paymentRecordRepository.sumPaidAmount();
+            revenueThisMonth = paymentRecordRepository.sumPaidAmountBetween(startOfMonth.toInstant(), nowUtc.toInstant());
+            revenueThisWeek = paymentRecordRepository.sumPaidAmountBetween(startOfWeek.toInstant(), nowUtc.toInstant());
+        } catch (Exception ex) {
+            log.warn("Unable to compute revenue aggregates: {}", ex.getMessage());
+        }
+
+        stats.put("totalRevenue", UserService.round2(totalRevenue));
+        stats.put("revenueThisMonth", UserService.round2(revenueThisMonth));
+        stats.put("revenueThisWeek", UserService.round2(revenueThisWeek));
         return stats;
     }
 

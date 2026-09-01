@@ -38,6 +38,10 @@ public class UserService {
      * ₹3 welcome credit for every new registration.
      */
     public static final double REGISTRATION_REWARD = 3.0;
+    /**
+     * Maximum number of accounts allowed per device identifier.
+     */
+    public static final int MAX_ACCOUNTS_PER_DEVICE = 3;
 
     private final UserAccountRepository userAccountRepository;
     private final CallHistoryRepository callHistoryRepository;
@@ -90,7 +94,7 @@ public class UserService {
             throw new BlockedUserException("Your account has been blocked. Please contact support for assistance.");
         }
 
-        // Device identifier validation (log-only)
+        // Device identifier validation (log-only) and record keeping
         if (!isNewUser && user.getDeviceIdentifier() != null && !user.getDeviceIdentifier().isBlank()) {
             if (deviceIdentifier == null || !deviceIdentifier.equals(user.getDeviceIdentifier())) {
                 log.warn("Device mismatch for user - Number: {}", normalizedNumber);
@@ -103,6 +107,14 @@ public class UserService {
         user.setActive(true);
         user.setTermsAccepted(true);
         if (deviceIdentifier != null && !deviceIdentifier.isBlank()) {
+            // Enforce max accounts per device
+            long existing = userAccountRepository.countByDeviceIdentifier(deviceIdentifier);
+            if (isNewUser && existing >= MAX_ACCOUNTS_PER_DEVICE) {
+                throw new IllegalArgumentException("Maximum of " + MAX_ACCOUNTS_PER_DEVICE + " accounts per device is allowed");
+            }
+            // append to deviceIdentifiers list if missing
+            if (user.getDeviceIdentifiers() == null) user.setDeviceIdentifiers(new java.util.ArrayList<>());
+            if (!user.getDeviceIdentifiers().contains(deviceIdentifier)) user.getDeviceIdentifiers().add(deviceIdentifier);
             user.setDeviceIdentifier(deviceIdentifier);
         }
         if (user.getTemp() == null || user.getTemp().isBlank()) {
@@ -187,6 +199,12 @@ public class UserService {
             user.setWalletBalance(reward);
             user.setWalletRewardCredited(true);
             if (deviceIdentifier != null && !deviceIdentifier.isBlank()) {
+                long existing1 = userAccountRepository.countByDeviceIdentifier(deviceIdentifier);
+                if (existing1 >= MAX_ACCOUNTS_PER_DEVICE) {
+                    throw new IllegalArgumentException("Maximum of " + MAX_ACCOUNTS_PER_DEVICE + " accounts per device is allowed");
+                }
+                if (user.getDeviceIdentifiers() == null) user.setDeviceIdentifiers(new java.util.ArrayList<>());
+                if (!user.getDeviceIdentifiers().contains(deviceIdentifier)) user.getDeviceIdentifiers().add(deviceIdentifier);
                 user.setDeviceIdentifier(deviceIdentifier);
             }
             applyAdminBootstrap(user);
@@ -461,6 +479,12 @@ public class UserService {
         user.setActive(true);
         user.setTermsAccepted(true);
         if (deviceIdentifier != null && !deviceIdentifier.isBlank()) {
+            long existing = userAccountRepository.countByDeviceIdentifier(deviceIdentifier);
+        if (isNewUser && existing >= MAX_ACCOUNTS_PER_DEVICE) {
+            throw new IllegalArgumentException("Maximum of " + MAX_ACCOUNTS_PER_DEVICE + " accounts per device is allowed");
+            }
+            if (user.getDeviceIdentifiers() == null) user.setDeviceIdentifiers(new java.util.ArrayList<>());
+            if (!user.getDeviceIdentifiers().contains(deviceIdentifier)) user.getDeviceIdentifiers().add(deviceIdentifier);
             user.setDeviceIdentifier(deviceIdentifier);
         }
         if (user.getTemp() == null || user.getTemp().isBlank()) {

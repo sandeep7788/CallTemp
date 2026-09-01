@@ -101,6 +101,21 @@ public class UserAccountRepository extends BaseFirebaseRepository {
         }
     }
 
+    /**
+     * Count users that have the given device identifier in their deviceIdentifiers array.
+     */
+    public long countByDeviceIdentifier(String deviceIdentifier) {
+        try {
+            if (deviceIdentifier == null || deviceIdentifier.isBlank()) return 0;
+            AggregateQuerySnapshot snap = db.collection(COLLECTION)
+                    .whereArrayContains("deviceIdentifiers", deviceIdentifier)
+                    .count().get().get();
+            return snap.getCount();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase countByDeviceIdentifier UserAccount failed", e);
+        }
+    }
+
     public long countByBlocked(boolean blocked) {
         try {
             AggregateQuerySnapshot snap = db.collection(COLLECTION).whereEqualTo("isBlocked", blocked).count().get().get();
@@ -184,7 +199,19 @@ public class UserAccountRepository extends BaseFirebaseRepository {
         u.setWalletBalance(getDouble(doc, "walletBalance", 0.0));
         u.setWalletRewardCredited(getBoolean(doc, "walletRewardCredited", false));
         u.setTermsAccepted(getBoolean(doc, "termsAccepted", false));
-        u.setDeviceIdentifier(getString(doc, "deviceIdentifier"));
+        // Support both legacy single deviceIdentifier string and newer deviceIdentifiers array
+        Object devicesObj = doc.get("deviceIdentifiers");
+        if (devicesObj instanceof List<?> list) {
+            List<String> ids = new ArrayList<>();
+            for (Object item : list) if (item instanceof String s) ids.add(s);
+            u.setDeviceIdentifiers(ids);
+            // keep deviceIdentifier as last-known for compatibility
+            if (!ids.isEmpty()) u.setDeviceIdentifier(ids.get(ids.size() - 1));
+        } else {
+            String single = getString(doc, "deviceIdentifier");
+            u.setDeviceIdentifier(single);
+            if (single != null) u.getDeviceIdentifiers().add(single);
+        }
         u.setBlocked(getBoolean(doc, "isBlocked", false));
         u.setAdmin(getBoolean(doc, "isAdmin", false));
         u.setCreatedAt(toInstant(doc.get("createdAt")));
@@ -206,6 +233,8 @@ public class UserAccountRepository extends BaseFirebaseRepository {
         m.put("walletBalance", u.getWalletBalance());
         m.put("walletRewardCredited", u.isWalletRewardCredited());
         m.put("termsAccepted", u.isTermsAccepted());
+        // Persist deviceIdentifiers array for multi-device support. Keep legacy deviceIdentifier too for compatibility.
+        m.put("deviceIdentifiers", u.getDeviceIdentifiers() == null ? new ArrayList<>() : u.getDeviceIdentifiers());
         m.put("deviceIdentifier", u.getDeviceIdentifier());
         m.put("isBlocked", u.isBlocked());
         m.put("isAdmin", u.isAdmin());

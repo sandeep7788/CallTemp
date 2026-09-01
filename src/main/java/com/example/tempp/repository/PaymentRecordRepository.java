@@ -102,6 +102,37 @@ public class PaymentRecordRepository extends BaseFirebaseRepository {
         }
     }
 
+    // ─── Aggregates ───────────────────────────────────────────────────────────
+
+    public double sumPaidAmount() {
+        try {
+            AggregateField sumField = AggregateField.sum("amount");
+            AggregateQuerySnapshot snap = db.collection(COLLECTION)
+                    .whereEqualTo("status", "PAID")
+                    .aggregate(sumField).get().get();
+            Object sum = snap.get(sumField);
+            return sum instanceof Number n ? n.doubleValue() : 0.0;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase sumPaidAmount failed", e);
+        }
+    }
+
+    public double sumPaidAmountBetween(Instant from, Instant to) {
+        try {
+            if (from == null || to == null) return 0.0;
+            AggregateField sumField = AggregateField.sum("amount");
+            AggregateQuerySnapshot snap = db.collection(COLLECTION)
+                    .whereEqualTo("status", "PAID")
+                    .whereGreaterThanOrEqualTo("paidAt", Date.from(from))
+                    .whereLessThanOrEqualTo("paidAt", Date.from(to))
+                    .aggregate(sumField).get().get();
+            Object sum = snap.get(sumField);
+            return sum instanceof Number n ? n.doubleValue() : 0.0;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Firebase sumPaidAmountBetween failed", e);
+        }
+    }
+
     // ─── Mapping ─────────────────────────────────────────────────────────────
 
     private PaymentRecord fromDoc(DocumentSnapshot doc) {

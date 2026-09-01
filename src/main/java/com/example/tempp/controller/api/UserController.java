@@ -41,6 +41,9 @@ public class UserController {
     public ResponseEntity<UserSession> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest, HttpSession session) {
         try {
             String clientIp = getClientIpAddress(httpRequest);
+
+//            enum e = TOO_MANY_REQUESTS(429, HttpStatus.Series.CLIENT_ERROR, "Too Many Requests")
+
             if (rateLimitingService.isLoginRateLimited(clientIp)) {
                 log.warn("Login rate limit exceeded for IP: {}", clientIp);
                 throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,

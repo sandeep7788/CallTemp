@@ -64,3 +64,7 @@ Want me to also add log.error(...) in those repository catch blocks (currently t
 3STOBvpAUqyivS1G5ZwvAvn+bRJpdMFtNzm6O5X6
 867344465598*/
 /*ssh -i ~/Downloads/mainvm.pem ec2-user@13.235.248.57*/
+
+
+/*ssh -i "D:\mainvm.pem" ec2-user@13.232.110.237
+ */
